@@ -16,6 +16,7 @@ public class OOP19_CA2_JingSheng_Moey {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        System.out.println("");
     }
     
 }
