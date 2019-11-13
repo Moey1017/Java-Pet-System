@@ -21,7 +21,7 @@ public class menu
     
     public static void main(String[] args)
     {
-        
+        ifInputValid(0,1);
     }
     public static void runMenu()
     {

@@ -5,6 +5,8 @@
  */
 package Ca2;
 
+import java.time.LocalDate;
+
 /**
  *
  * @author D00217017
@@ -12,25 +14,34 @@ package Ca2;
 public class Bird extends Pet
 {
     private double wingSpan;
-    private boolean hasWing;
+    private boolean canFly;
 
-    public Bird(String type, String name, String breed, int age, String colour, char gender, String regis_Date,int ownerID, boolean hasWing, double wingSpan) 
+    public Bird(String name, String type, String breed, int age, String colour, Gender gender, LocalDate regis_Date,int ownerID, boolean hasWing, double wingSpan) 
     {
-        super(type, name, breed, age, colour, gender, regis_Date, ownerID);
+        super(name, type, breed, age, colour, gender, regis_Date, ownerID);
         this.wingSpan = wingSpan;
-        this.hasWing = hasWing;
+        this.canFly = hasWing;
     }
     
-    public Bird(String type, String name, String breed, int age, String colour, char gender, String regis_Date, boolean hasWing, double wingSpan) 
+    public Bird(String name, String type, String breed, int age, String colour, Gender gender, LocalDate regis_Date, boolean hasWing, double wingSpan) 
     {
-        super(type, name, breed, age, colour, gender, regis_Date);
+        super(name, type, breed, age, colour, gender, regis_Date);
         this.wingSpan = wingSpan;
-        this.hasWing = hasWing;
+        this.canFly = hasWing;
+    }
+    
+    public Bird(String name, String type, String breed, String colour, int wingSpan, boolean canFly)
+    {
+        super(name, type, breed, colour);
+        this.wingSpan = wingSpan;
+        this.canFly = canFly;
     }
 
-    public Bird()
+    public Bird(String name)
     {
-        super();
+        super(name);
+        this.wingSpan = wingSpan;
+        this.canFly = canFly;
     }
 
     public double getWingSpan()
@@ -40,7 +51,7 @@ public class Bird extends Pet
 
     public boolean isHasWing()
     {
-        return hasWing;
+        return canFly;
     }
 
     public void setWingSpan(double wingSpan)
@@ -50,14 +61,53 @@ public class Bird extends Pet
 
     public void setHasWing(boolean hasWing)
     {
-        this.hasWing = hasWing;
+        this.canFly = hasWing;
     }
 
     @Override
     public String toString()
     {
-        return super.toString() + "Bird{" + "wingSpan=" + wingSpan + ", hasWing=" + hasWing + '}';
+        return super.toString() + "Bird{" + "wingSpan=" + wingSpan + ", canFly=" + canFly + '}';
     }
-    
-    
+
+    @Override
+    public int hashCode()
+    {
+        int hash = 3;
+        hash = 71 * hash + (int) (Double.doubleToLongBits(this.wingSpan) ^ (Double.doubleToLongBits(this.wingSpan) >>> 32));
+        hash = 71 * hash + (this.canFly ? 1 : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (obj == null)
+        {
+            return false;
+        }
+        if (getClass() != obj.getClass())
+        {
+            return false;
+        }
+        final Bird other = (Bird) obj;
+        if (Double.doubleToLongBits(this.wingSpan) != Double.doubleToLongBits(other.wingSpan))
+        {
+            return false;
+        }
+        if (this.canFly != other.canFly)
+        {
+            return false;
+        }
+        return true;
+    }
+
+
+
+
+
 }

@@ -5,29 +5,39 @@
  */
 package Ca2;
 
+import java.time.LocalDate;
+
 /**
  *
  * @author HP
  */
 public class Mammal extends Pet
 {
+
     private boolean isNeutered;
 
-    public Mammal(String type, String name, String breed, int age, String colour, char gender, String regis_Date, int ownerID, boolean isNeutered)
+    public Mammal(String type, String name, String breed, int age, String colour, Gender gender, LocalDate regis_Date, int ownerID, boolean isNeutered)
     {
-        super(type, name, breed, age, colour, gender, regis_Date, ownerID);
-        this.isNeutered = isNeutered;
-    }
-    
-    public Mammal(String type, String name, String breed, int age, String colour, char gender, String regis_Date, boolean isNeutered)
-    {
-        super(type, name, breed, age, colour, gender, regis_Date);
+        super(name, type, breed, age, colour, gender, regis_Date, ownerID);
         this.isNeutered = isNeutered;
     }
 
-    public Mammal()
+    public Mammal(String type, String name, String breed, int age, String colour, Gender gender, LocalDate regis_Date, boolean isNeutered)
     {
-        super();
+        super(name, type, breed, age, colour, gender, regis_Date);
+        this.isNeutered = isNeutered;
+    }
+
+    public Mammal(String name, String type, String breed, String colour, boolean isNeutered)
+    {
+        super(name, type, breed, colour);
+        this.isNeutered = isNeutered;
+    }
+
+    public Mammal(String name)
+    {
+        super(name);
+        this.isNeutered = isNeutered;
     }
 
     public boolean isIsNeutered()
@@ -45,6 +55,37 @@ public class Mammal extends Pet
     {
         return super.toString() + "Mammal{" + "isNeutered=" + isNeutered + '}';
     }
-   
-    
+
+    @Override
+    public int hashCode()
+    {
+        int hash = 7;
+        hash = 41 * hash + (this.isNeutered ? 1 : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        super.equals(obj);
+        if (this == obj)
+        {
+            return true;
+        }
+        if (obj == null)
+        {
+            return false;
+        }
+        if (getClass() != obj.getClass())
+        {
+            return false;
+        }
+        final Mammal other = (Mammal) obj;
+        if (this.isNeutered != other.isNeutered)
+        {
+            return false;
+        }
+        return true;
+    }
+
 }
