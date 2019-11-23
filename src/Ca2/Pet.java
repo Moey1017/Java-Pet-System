@@ -12,7 +12,7 @@ import java.util.Objects;
  *
  * @author HP
  */
-public class Pet
+public class Pet implements Comparable<Pet>
 {
     private String      name;
     private String      type;
@@ -21,11 +21,11 @@ public class Pet
     private String      colour;
     private Gender      gender;
     private LocalDate   regis_Date;
-    private String      petID = "PID";
-    public  static int  current_pet = 0;
-    private String      ownerID = "OID";
+    private String      petID;
+    public  static int  pets_registered = 0;
+    private String      ownerID;
 
-    public Pet(String name, String type, String breed, int age, String colour, Gender gender, LocalDate regis_Date, int numOwnerID) 
+    public Pet(String name, String type, String breed, int age, String colour, Gender gender, LocalDate regis_Date, String ownerID) 
     {
         this.type = type;
         this.name = name;
@@ -34,9 +34,9 @@ public class Pet
         this.colour = colour;
         this.gender = gender;
         this.regis_Date = regis_Date;
-        this.petID = petID + current_pet;
-        current_pet++;
-        this.ownerID = ownerID + numOwnerID;
+        this.petID = "PID" + pets_registered;
+        pets_registered++;
+        this.ownerID = ownerID;
     }
 
     public Pet(String name, String type, String breed, int age, String colour, Gender gender, LocalDate regis_Date)
@@ -48,8 +48,8 @@ public class Pet
         this.colour = colour;
         this.gender = gender;
         this.regis_Date = regis_Date;
-        this.petID = petID + current_pet;
-        current_pet++;
+        this.petID = "PID" + pets_registered;
+        pets_registered++;
     }
 
     //using this
@@ -59,8 +59,8 @@ public class Pet
         this.type = type;
         this.breed = breed;
         this.colour = colour;
-        this.petID = petID + current_pet;
-        current_pet++;
+        this.petID = "PID" + pets_registered;
+        pets_registered++;
     }
 
     public Pet(String name) 
@@ -70,10 +70,20 @@ public class Pet
         this.breed = "";
         setAge(age);
         this.colour = "";
-        this.gender = gender;
+        this.gender = null;
         this.regis_Date = LocalDate.now();
-        this.petID = petID + current_pet;
-        current_pet++;
+        this.petID = "PID" + pets_registered;
+        pets_registered++;
+    }
+
+    public Pet(String ownerID, String petID, String name, String type, String breed, String colour, Gender gender, int age)
+    {
+        this.name = name;
+        this.gender = gender;
+        this.age = age;
+        this.ownerID = ownerID;
+        this.petID = petID + pets_registered;
+        pets_registered++;
     }
 
     public String getType()
@@ -120,6 +130,11 @@ public class Pet
     {
         return ownerID;
     }
+    
+    public static void setPets_registered(int nextPetID)
+    {
+        Pet.pets_registered = nextPetID;
+    }
 
     public void setType(String type)
     {
@@ -160,15 +175,15 @@ public class Pet
         this.regis_Date = regis_Date;
     }
 
-    public void setOwnerID(int numOwnerID)
+    public void setOwnerID(String OID)
     {
-        this.ownerID = "OID" + numOwnerID;
+        this.ownerID = OID;
     }
 
     @Override
     public String toString()
     {
-        return "Pet{" + "name=" + name + ", type=" + type + ", breed=" + breed + ", age=" + age + ", colour=" + colour + ", gender=" + gender + ", regis_Date=" + regis_Date + ", petID=" + petID + ", current_pet=" + current_pet + ", ownerID=" + ownerID + '}';
+        return "Pet{" + "name=" + name + ", type=" + type + ", breed=" + breed + ", age=" + age + ", colour=" + colour + ", gender=" + gender + ", regis_Date=" + regis_Date + ", petID=" + petID + ", pets_registered=" + pets_registered + ", ownerID=" + ownerID + '}';
     }
 
     @Override
@@ -224,51 +239,10 @@ public class Pet
         return true;
     }
     
-//    @Override
-//    public boolean equals(Object obj)
-//    {
-//        if (this == obj)
-//        {
-//            return true;
-//        }
-//        if (obj == null)
-//        {
-//            return false;
-//        }
-//        if (getClass() != obj.getClass())
-//        {
-//            return false;
-//        }
-//        final Pet other = (Pet) obj;
-//        if (this.age != other.age)
-//        {
-//            return false;
-//        }
-//        if (this.ownerID != other.ownerID)
-//        {
-//            return false;
-//        }
-//        if (!Objects.equals(this.name, other.name))
-//        {
-//            return false;
-//        }
-//        if (!Objects.equals(this.type, other.type))
-//        {
-//            return false;
-//        }
-//        if (!Objects.equals(this.breed, other.breed))
-//        {
-//            return false;
-//        }
-//        if (!Objects.equals(this.colour, other.colour))
-//        {
-//            return false;
-//        }
-//        if (this.gender != other.gender)
-//        {
-//            return false;
-//        }
-//        return true;
-//    }
     
+    @Override
+    public int compareTo(Pet other)
+    {
+        return this.petID.compareTo(other.petID);
+    }
 }

@@ -13,24 +13,25 @@ import java.time.LocalDate;
  */
 public class Bird extends Pet
 {
+
     private double wingSpan;
     private boolean canFly;
 
-    public Bird(String name, String type, String breed, int age, String colour, Gender gender, LocalDate regis_Date,int ownerID, boolean hasWing, double wingSpan) 
+    public Bird(String name, String type, String breed, int age, String colour, Gender gender, LocalDate regis_Date, String ownerID, boolean hasWing, double wingSpan)
     {
         super(name, type, breed, age, colour, gender, regis_Date, ownerID);
         this.wingSpan = wingSpan;
         this.canFly = hasWing;
     }
-    
-    public Bird(String name, String type, String breed, int age, String colour, Gender gender, LocalDate regis_Date, boolean hasWing, double wingSpan) 
+
+    public Bird(String name, String type, String breed, int age, String colour, Gender gender, LocalDate regis_Date, boolean hasWing, double wingSpan)
     {
         super(name, type, breed, age, colour, gender, regis_Date);
         this.wingSpan = wingSpan;
         this.canFly = hasWing;
     }
-    
-    public Bird(String name, String type, String breed, String colour, int wingSpan, boolean canFly)
+
+    public Bird(String name, String type, String breed, String colour, double wingSpan, boolean canFly)
     {
         super(name, type, breed, colour);
         this.wingSpan = wingSpan;
@@ -40,6 +41,13 @@ public class Bird extends Pet
     public Bird(String name)
     {
         super(name);
+        this.wingSpan = wingSpan;
+        this.canFly = canFly;
+    }
+
+    public Bird(String ownerID, String petID, String name, String type, String breed, String colour, Gender gender, int age)
+    {
+        super(ownerID,petID, name, type, breed, colour, gender, age);
         this.wingSpan = wingSpan;
         this.canFly = canFly;
     }
@@ -82,32 +90,23 @@ public class Bird extends Pet
     @Override
     public boolean equals(Object obj)
     {
-        if (this == obj)
+        if (super.equals(obj))
         {
-            return true;
+            if (obj instanceof Bird)
+            {
+                final Bird other = (Bird) obj;
+                if (Double.doubleToLongBits(this.wingSpan) != Double.doubleToLongBits(other.wingSpan))
+                {
+                    return false;
+                }
+                if (this.canFly != other.canFly)
+                {
+                    return false;
+                }
+                return true;
+            }
         }
-        if (obj == null)
-        {
-            return false;
-        }
-        if (getClass() != obj.getClass())
-        {
-            return false;
-        }
-        final Bird other = (Bird) obj;
-        if (Double.doubleToLongBits(this.wingSpan) != Double.doubleToLongBits(other.wingSpan))
-        {
-            return false;
-        }
-        if (this.canFly != other.canFly)
-        {
-            return false;
-        }
-        return true;
+        return false;
     }
-
-
-
-
 
 }

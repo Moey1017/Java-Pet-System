@@ -16,7 +16,7 @@ public class Mammal extends Pet
 
     private boolean isNeutered;
 
-    public Mammal(String type, String name, String breed, int age, String colour, Gender gender, LocalDate regis_Date, int ownerID, boolean isNeutered)
+    public Mammal(String type, String name, String breed, int age, String colour, Gender gender, LocalDate regis_Date, String ownerID, boolean isNeutered)
     {
         super(name, type, breed, age, colour, gender, regis_Date, ownerID);
         this.isNeutered = isNeutered;
@@ -37,6 +37,12 @@ public class Mammal extends Pet
     public Mammal(String name)
     {
         super(name);
+        this.isNeutered = isNeutered;
+    }
+
+    public Mammal(String ownerID, String petID, String name, String type, String breed, String colour, Gender gender, int age)
+    {
+        super(ownerID,petID, name, type, breed, colour, gender, age);
         this.isNeutered = isNeutered;
     }
 
@@ -67,25 +73,17 @@ public class Mammal extends Pet
     @Override
     public boolean equals(Object obj)
     {
-        super.equals(obj);
-        if (this == obj)
+        if (super.equals(obj) == true)
         {
+            final Mammal other = (Mammal) obj;
+            if (this.isNeutered != other.isNeutered)
+            {
+                return false;
+            }
             return true;
         }
-        if (obj == null)
-        {
+        else
             return false;
-        }
-        if (getClass() != obj.getClass())
-        {
-            return false;
-        }
-        final Mammal other = (Mammal) obj;
-        if (this.isNeutered != other.isNeutered)
-        {
-            return false;
-        }
-        return true;
     }
 
 }

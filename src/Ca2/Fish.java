@@ -14,29 +14,36 @@ import java.util.Objects;
  */
 public class Fish extends Pet
 {
+
     private WaterType water_Type;
 
-    public Fish(String type, String name, String breed, int age, String colour, Gender gender, LocalDate regis_Date,int ownerID, WaterType water_Type)
+    public Fish(String type, String name, String breed, int age, String colour, Gender gender, LocalDate regis_Date, String ownerID, WaterType water_Type)
     {
         super(name, type, breed, age, colour, gender, regis_Date, ownerID);
         this.water_Type = water_Type;
     }
-    
+
     public Fish(String type, String name, String breed, int age, String colour, Gender gender, LocalDate regis_Date, WaterType water_Type)
     {
         super(name, type, breed, age, colour, gender, regis_Date);
         this.water_Type = water_Type;
     }
-    
+
     public Fish(String name, String type, String breed, String colour, WaterType water_Type)
     {
         super(name, type, breed, colour);
         this.water_Type = water_Type;
     }
-    
+
     public Fish(String name)
     {
         super(name);
+        this.water_Type = water_Type;
+    }
+
+    public Fish(String ownerID, String petID, String name, String type, String breed, String colour, Gender gender, int age)
+    {
+        super(ownerID,petID, name, type, breed, colour, gender, age);
         this.water_Type = water_Type;
     }
 
@@ -67,25 +74,17 @@ public class Fish extends Pet
     @Override
     public boolean equals(Object obj)
     {
-        super.equals(obj);
-        if (this == obj)
+        if (super.equals(obj) == true)
         {
+            final Fish other = (Fish) obj;
+            if (this.water_Type != other.water_Type)
+            {
+                return false;
+            }
             return true;
         }
-        if (obj == null)
-        {
+        else
             return false;
-        }
-        if (getClass() != obj.getClass())
-        {
-            return false;
-        }
-        final Fish other = (Fish) obj;
-        if (this.water_Type != other.water_Type)
-        {
-            return false;
-        }
-        return true;
     }
-    
+
 }
