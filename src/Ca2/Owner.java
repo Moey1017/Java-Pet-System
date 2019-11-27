@@ -5,6 +5,8 @@
  */
 package Ca2;
 
+import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
@@ -13,7 +15,7 @@ import java.util.Objects;
  *
  * @author HP
  */
-public class Owner implements Comparable<Owner>
+public class Owner implements Serializable, Comparable<Owner>
 {
 
     private String name;
@@ -53,6 +55,11 @@ public class Owner implements Comparable<Owner>
         this.pets = new ArrayList<>();
     }
 
+    public Owner()
+    {
+        this.pets = new ArrayList<Pet>();
+    }
+
     public String getName()
     {
         return name;
@@ -77,7 +84,7 @@ public class Owner implements Comparable<Owner>
     {
         return home_Address;
     }
-    
+
     public static void setOwners_registered(int nextId)
     {
         Owner.owners_registered = nextId;
@@ -112,22 +119,17 @@ public class Owner implements Comparable<Owner>
     {
         this.pets.add(p);
     }
-    
-    public int getPetSize()
+
+    public int getPetAmount()
     {
         return pets.size();
     }
-    
+
     public Pet thisPets(int PID)
     {
         return pets.get(PID);
     }
-    
-    public int petsSize()
-    {
-        return pets.size();
-    }
-    
+
     public void displayOwnerPets()
     {
         for (int i = 0; i < pets.size(); i++)
@@ -135,7 +137,7 @@ public class Owner implements Comparable<Owner>
             System.out.println(pets.get(i));
         }
     }
-    
+
     public Pet getThisPet(int PID)
     {
         return this.pets.get(PID);
@@ -157,86 +159,95 @@ public class Owner implements Comparable<Owner>
         return pets.contains(p);
     }
 
-    public void setPetOwnerId(int PID, String OID)
+    public void setPetOwnerId(int petPos, String OID)
     {
-        pets.get(PID).setOwnerID(OID);
-    }
-    
-    public void setPetName(int PID, String name)
-    {
-        pets.get(PID).setName(name);
+        pets.get(petPos).setOwnerID(OID);
     }
 
-    public void setPetType(int PID, String type)
+    public void setPetName(int petPos, String name)
     {
-        pets.get(PID).setType(type);
+        pets.get(petPos).setName(name);
     }
 
-    public void setPetBreed(int PID, String breed)
+    public void setPetType(int petPos, String type)
     {
-        pets.get(PID).setBreed(breed);
+        pets.get(petPos).setType(type);
     }
 
-    public void setPetColour(int PID, String colour)
+    public void setPetBreed(int petPos, String breed)
     {
-        pets.get(PID).setColour(colour);
+        pets.get(petPos).setBreed(breed);
     }
 
-    public void setPetAge(int PID, int age)
+    public void setPetColour(int petPos, String colour)
     {
-        pets.get(PID).setAge(age);
+        pets.get(petPos).setColour(colour);
     }
 
-    public void setPetGender(int PID, Gender gender)
+    public void setPetAge(int petPos, int age)
     {
-        pets.get(PID).setGender(gender);
+        pets.get(petPos).setAge(age);
     }
 
-    public void setPetWingSpan(int PID, double wingSpan)
+    public void setPetGender(int petPos, Gender gender)
     {
-        ((Bird) pets.get(PID)).setWingSpan(wingSpan);
+        pets.get(petPos).setGender(gender);
     }
-    
-    public void setPetCanFly(int PID, boolean hasWing)
+
+    public void setPetRegisDate(int petPos, LocalDate regisDate)
     {
-        ((Bird) pets.get(PID)).setHasWing(hasWing);
+        pets.get(petPos).setRegis_Date(regisDate);
     }
-    
-    public void setPetNeutered(int PID, boolean isNeutered)
+
+    public void setPetWingSpan(int petPos, double wingSpan)
     {
-        ((Mammal) pets.get(PID)).setIsNeutered(isNeutered);
+        ((Bird) pets.get(petPos)).setWingSpan(wingSpan);
     }
-    
-    public void setPetWaterType(int PID, WaterType water_Type)
+
+    public void setPetCanFly(int petPos, boolean hasWing)
     {
-        ((Fish) pets.get(PID)).setWater_Type(water_Type);
+        ((Bird) pets.get(petPos)).setHasWing(hasWing);
     }
-    
-    public int PetExistID(String PID)
+
+    public void setPetNeutered(int petPos, boolean isNeutered)
+    {
+        ((Mammal) pets.get(petPos)).setIsNeutered(isNeutered);
+    }
+
+    public void setPetWaterType(int petPos, WaterType water_Type)
+    {
+        ((Fish) pets.get(petPos)).setWater_Type(water_Type);
+    }
+
+    public int GetPetExistID(String PID)
     {
         int pos = -1;
-        for(int i = 0 ; i < pets.size(); i++)
+        for (int i = 0; i < pets.size(); i++)
         {
-            if(pets.get(i).getPetID().equals(PID))
+            if (pets.get(i).getPetID().equals(PID))
             {
                 return i;
             }
         }
         return pos;
     }
-    
+
     public boolean ifPetExist(String PID)
     {
-        if(PetExistID(PID) == -1)
+        if (GetPetExistID(PID) == -1)
+        {
             return false;
-        else 
+        }
+        else
+        {
             return true;
+        }
     }
-    
+
     public void deletePetById(String PID)
     {
-        int pos = PetExistID(PID);
-        if( pos == -1)
+        int pos = GetPetExistID(PID);
+        if (pos == -1)
         {
             System.out.println("Pet not found");
         }
@@ -246,10 +257,131 @@ public class Owner implements Comparable<Owner>
             System.out.println("Pet's removed");
         }
     }
-    
+
     public void deleteAllPet()
     {
         pets.removeAll(pets);
+    }
+
+    public int getMammalNum()
+    {
+        int mammalNum = 0;
+        for (Pet p : this.pets)
+        {
+            if (p instanceof Mammal)
+            {
+                mammalNum++;
+            }
+        }
+        return mammalNum;
+    }
+
+    public int getBirdNum()
+    {
+        int birdNum = 0;
+        for (Pet p : this.pets)
+        {
+            if (p instanceof Bird)
+            {
+                birdNum++;
+            }
+        }
+        return birdNum;
+    }
+
+    public int getFishNum()
+    {
+        int fishNum = 0;
+        for (Pet p : this.pets)
+        {
+            if (p instanceof Fish)
+            {
+                fishNum++;
+            }
+        }
+        return fishNum;
+    }
+
+    //not used
+    public double percentageOfFish()
+    {
+        int fishNum = getFishNum();
+        int totalPets = this.getPetAmount();
+        return fishNum / (int) totalPets;
+    }
+    
+    //not used 
+    public double percentageOfBird()
+    {
+        int birdNum = getBirdNum();
+        int totalPets = this.getPetAmount();
+        return birdNum / (int) totalPets;
+    }
+    
+    //not used
+    public double percentageOfMammal()
+    {
+        int mammalNum = getMammalNum();
+        int totalPets = this.getPetAmount();
+        return mammalNum / (int) totalPets;
+    }
+
+    public double getTotalBirdWingSpan()
+    {
+        double totalWingSpan = 0;
+        for (Pet p : this.pets)
+        {
+            if (p instanceof Bird)
+            {
+                totalWingSpan = totalWingSpan + ((Bird) p).getWingSpan();
+            }
+        }
+        return totalWingSpan;
+    }
+
+    public int getNumBirdCanFly()
+    {
+        int canFlyNum = 0;
+        for (Pet p : this.pets)
+        {
+            if (p instanceof Bird)
+            {
+                if (((Bird) p).getCanFly() == true)
+                {
+                    canFlyNum++;
+                }
+            }
+        }
+        return canFlyNum;
+    }
+
+    public int getNumMammalNeutered()
+    {
+        int neuteredNum = 0;
+        for (Pet p : this.pets)
+        {
+            if (p instanceof Mammal)
+            {
+                if (((Mammal) p).isIsNeutered() == true)
+                {
+                    neuteredNum++;
+                }
+            }
+        }
+        return neuteredNum;
+    }
+
+    public int getNumMalePet()
+    {
+        int maleNum = 0;
+        for (Pet p : this.pets)
+        {
+            if (p.getGender().toString().equalsIgnoreCase("male"))
+            {
+                maleNum++;
+            }
+        }
+        return maleNum;
     }
 
     @Override
@@ -292,17 +424,16 @@ public class Owner implements Comparable<Owner>
         }
         return true;
     }
-    
+
     @Override
     public int compareTo(Owner other)
     {
         return this.ownerID.compareTo(other.ownerID);
     }
-    
+
     public void sortPet(Pet other)
     {
         Collections.sort(pets);
     }
-   
 
 }

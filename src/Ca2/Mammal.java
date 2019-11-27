@@ -16,21 +16,15 @@ public class Mammal extends Pet
 
     private boolean isNeutered;
 
-    public Mammal(String type, String name, String breed, int age, String colour, Gender gender, LocalDate regis_Date, String ownerID, boolean isNeutered)
+    public Mammal(String type, String name, String breed, int age, String colour, Gender gender, LocalDate regis_Date, String ownerID, String petID, boolean isNeutered)
     {
-        super(name, type, breed, age, colour, gender, regis_Date, ownerID);
+        super(name, type, breed, age, colour, gender, regis_Date, ownerID, petID);
         this.isNeutered = isNeutered;
     }
 
-    public Mammal(String type, String name, String breed, int age, String colour, Gender gender, LocalDate regis_Date, boolean isNeutered)
+    public Mammal(String name, String type, String breed, String colour, int age, String ownerID, boolean isNeutered)
     {
-        super(name, type, breed, age, colour, gender, regis_Date);
-        this.isNeutered = isNeutered;
-    }
-
-    public Mammal(String name, String type, String breed, String colour, boolean isNeutered)
-    {
-        super(name, type, breed, colour);
+        super(name, type, breed, colour, age, ownerID);
         this.isNeutered = isNeutered;
     }
 

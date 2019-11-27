@@ -17,23 +17,16 @@ public class Bird extends Pet
     private double wingSpan;
     private boolean canFly;
 
-    public Bird(String name, String type, String breed, int age, String colour, Gender gender, LocalDate regis_Date, String ownerID, boolean hasWing, double wingSpan)
+    public Bird(String name, String type, String breed, int age, String colour, Gender gender, LocalDate regis_Date, String ownerID,String petID, boolean hasWing, double wingSpan)
     {
-        super(name, type, breed, age, colour, gender, regis_Date, ownerID);
+        super(name, type, breed, age, colour, gender, regis_Date, ownerID, petID);
         this.wingSpan = wingSpan;
         this.canFly = hasWing;
     }
 
-    public Bird(String name, String type, String breed, int age, String colour, Gender gender, LocalDate regis_Date, boolean hasWing, double wingSpan)
+    public Bird(String name, String type, String breed, String colour, int age, String ownerID, double wingSpan, boolean canFly)
     {
-        super(name, type, breed, age, colour, gender, regis_Date);
-        this.wingSpan = wingSpan;
-        this.canFly = hasWing;
-    }
-
-    public Bird(String name, String type, String breed, String colour, double wingSpan, boolean canFly)
-    {
-        super(name, type, breed, colour);
+        super(name, type, breed, colour, age, ownerID);
         this.wingSpan = wingSpan;
         this.canFly = canFly;
     }
@@ -57,7 +50,7 @@ public class Bird extends Pet
         return wingSpan;
     }
 
-    public boolean isHasWing()
+    public boolean getCanFly()
     {
         return canFly;
     }

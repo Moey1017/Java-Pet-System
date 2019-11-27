@@ -6,9 +6,14 @@
 package Ca2;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -18,10 +23,12 @@ import java.util.Scanner;
 public class Registry
 {
 
-    public static String BOTH_FOUND = "Both Found";
-    public static String OWNER_NOT_FOUND = "Owner not found";
-    public static String PET_NOT_FOUND = "Pet not found";
-    public static String BOTH_NOT_FOUND = "Both not found";
+    public static String BOTH_FOUND = "Both Found.";
+    public static String OWNER_NOT_FOUND = "Owner not found.";
+    public static String PET_NOT_FOUND = "Pet not found.";
+    public static String BOTH_NOT_FOUND = "Both not found.";
+    public static String DUPLICATE_FOUND = "Duplicate Found.";
+    public static String SUCCESSFULLY_ADDED = "successfully added.";
     private ArrayList<Owner> owners;
 
     public Registry()
@@ -29,42 +36,50 @@ public class Registry
         owners = new ArrayList<>();
     }
 
-    public void addOwner(Owner o)
+    public void addOwnerInRegis(Owner o)
     {
-        owners.add(o);
+        if (this.owners.contains(o))
+        {
+            System.out.println(DUPLICATE_FOUND);
+        }
+        else
+        {
+            owners.add(o);
+            System.out.println("Owner " + SUCCESSFULLY_ADDED);
+        }
     }
 
     public void setOwnerNameInRegis(String OID, String name)
     {
-        int ownerPos = ownerIdExistInRegis(OID);
-        owners.get(ownerPos).setName(name);
+        int ownerPos = getOwnerIdExistInRegis(OID);
+        this.owners.get(ownerPos).setName(name);
     }
 
     public void setOwnerEmailInRegis(String OID, String email)
     {
-        int ownerPos = ownerIdExistInRegis(OID);
-        owners.get(ownerPos).setEmail(email);
+        int ownerPos = getOwnerIdExistInRegis(OID);
+        this.owners.get(ownerPos).setEmail(email);
     }
 
     public void setOwnerTelephoneInRegis(String OID, String telephone)
     {
-        int ownerPos = ownerIdExistInRegis(OID);
-        owners.get(ownerPos).setTelephone(telephone);
+        int ownerPos = getOwnerIdExistInRegis(OID);
+        this.owners.get(ownerPos).setTelephone(telephone);
     }
 
     public void setOwnerHomeAddressInRegis(String OID, String home_Address)
     {
-        int ownerPos = ownerIdExistInRegis(OID);
-        owners.get(ownerPos).setHome_Address(home_Address);
+        int ownerPos = getOwnerIdExistInRegis(OID);
+        this.owners.get(ownerPos).setHome_Address(home_Address);
     }
 
     public void deleteOwnerByIdInRegis(String OID)
     {
-        int ownerId = ownerIdExistInRegis(OID);
+        int ownerId = getOwnerIdExistInRegis(OID);
         if (ownerId != -1)
         {
-            owners.get(ownerId).deleteAllPet();
-            owners.remove(ownerId);
+            this.owners.get(ownerId).deleteAllPet();
+            this.owners.remove(ownerId);
             System.out.println("Owners and Pets under this owner have been removed.");
         }
         else
@@ -75,7 +90,7 @@ public class Registry
 
     public ArrayList<Owner> getOwners()
     {
-        return owners;
+        return this.owners;
     }
 
     public Owner getThisOwner(int OID)
@@ -89,13 +104,51 @@ public class Registry
         return "Registry{" + "owner=" + owners + '}';
     }
 
+    public void readFileOut(String filePath)
+    {
+        try
+        {
+            ObjectOutputStream out = new ObjectOutputStream(
+                    new FileOutputStream(filePath));
+            out.writeObject(this.owners);
+            out.close();
+        } catch (Exception e)
+        {
+            System.out.println(e);
+        }
+    }
+
+    public void readFileIn(String filePath)
+    {
+        try
+        {
+            File f = new File(filePath);
+            if (f.exists())
+            {
+                ObjectInputStream in = new ObjectInputStream(
+                        new FileInputStream(f));
+                ArrayList<Owner> o = (ArrayList<Owner>) in.readObject();
+                this.owners = o;
+                in.close();
+            }
+            else
+            {
+                loadOwnerData();
+                loadPetData();
+            }
+        } catch (Exception e)
+        {
+            System.out.println(e);
+        }
+    }
+    
     public void loadOwnerData()
     {
         try (Scanner input = new Scanner(new File("Owner Data.txt")))
         {
             int nextOwnerId = input.nextInt();
             Owner.setOwners_registered(nextOwnerId);
-            input.useDelimiter("[;]");
+            input.useDelimiter("[;\n\r]+");
             Owner o = null;
             while (input.hasNext())
             {
@@ -105,8 +158,9 @@ public class Registry
                 String telephone = input.next();
                 String address = input.next();
                 o = new Owner(OID, name, email, telephone, address);
-                this.addOwner(o);
+                this.addOwnerInRegis(o);
             }
+            System.out.println("Finish loading owner data\n");
         } catch (FileNotFoundException e)
         {
             System.out.println(e.getMessage());
@@ -119,12 +173,12 @@ public class Registry
         {
             int nextPetId = input.nextInt();
             Pet.setPets_registered(nextPetId);
-            input.useDelimiter("[;]");
+            input.useDelimiter("[;\n\r]+");
             Pet p = null;
             while (input.hasNext())
             {
                 String OID = input.next();
-                int ownerId = ownerIdExistInRegis(OID);
+                int ownerId = getOwnerIdExistInRegis(OID);
                 String PID = input.next();
                 String creature = input.next();
                 String name = input.next();
@@ -147,15 +201,15 @@ public class Registry
                 if (creature.equals("Mammal"))
                 {
                     String sIsNeutered = input.next();
-                    boolean isNeutered = getBoolean(sIsNeutered);
-                    p = new Mammal(name, type, breed, age, colour, gender, regis_Date, OID, isNeutered);
+                    boolean isNeutered = Utilities.getBoolean(sIsNeutered);
+                    p = new Mammal(name, type, breed, age, colour, gender, regis_Date, OID, PID, isNeutered);
                 }
                 else if (creature.equals("Bird"))
                 {
                     double wingSpan = input.nextDouble();
                     String sCanFly = input.next();
-                    boolean canFly = getBoolean(sCanFly);
-                    p = new Bird(name, type, breed, age, colour, gender, regis_Date, OID, canFly, wingSpan);
+                    boolean canFly = Utilities.getBoolean(sCanFly);
+                    p = new Bird(name, type, breed, age, colour, gender, regis_Date, OID, PID, canFly, wingSpan);
                 }
                 else if (creature.equals("Fish"))
                 {
@@ -173,21 +227,22 @@ public class Registry
                     {
                         water_Type = WaterType.SEAWATER;
                     }
-                    p = new Fish(name, type, breed, age, colour, gender, regis_Date, OID, water_Type);
+                    p = new Fish(name, type, breed, age, colour, gender, regis_Date, OID, PID, water_Type);
                 }
                 else
                 {
-                    p = new Pet(name, type, breed, age, colour, gender, regis_Date, OID);
+                    p = new Pet(name, type, breed, age, colour, gender, regis_Date, OID, PID);
                 }
-                if(ownerId == -1)
+                if (ownerId == -1)
                 {
                     System.out.println(OWNER_NOT_FOUND + "[!]");
                 }
                 else
                 {
-                    System.out.println(p);
+                    addPetToOwnerInRegis(p, OID);
                 }
             }
+            System.out.println("Finish loading pet date\n");
         } catch (FileNotFoundException e)
         {
             System.out.println(e.getMessage());
@@ -199,13 +254,13 @@ public class Registry
         return owners.contains(o);
     }
 
-    public int ownerIdExistInRegis(String OID)
+    public int getOwnerIdExistInRegis(String OID)
     {
         int pos = -1;
         int i = 0;
         while (i < this.owners.size() && pos == -1)
         {
-            if (this.owners.get(i).getOwnerID().equalsIgnoreCase(OID))
+            if (this.owners.get(i).getOwnerID().equals(OID))
             {
                 pos = i;
             }
@@ -214,9 +269,9 @@ public class Registry
         return pos;
     }
 
-    public boolean ifOwnerIdExistInRegis(String OID)
+    public boolean ifgetOwnerIdExistInRegis(String OID)
     {
-        if (ownerIdExistInRegis(OID) == -1)
+        if (getOwnerIdExistInRegis(OID) == -1)
         {
             return false;
         }
@@ -229,11 +284,11 @@ public class Registry
     // In owner
     public int petIdExistInRegis(String OID, String PID)
     {
-        int OwnerPos = ownerIdExistInRegis(OID);
+        int OwnerPos = getOwnerIdExistInRegis(OID);
         int PetPos = -1;
         if (OwnerPos != -1)
         {
-            PetPos = owners.get(OwnerPos).PetExistID(PID);
+            PetPos = owners.get(OwnerPos).GetPetExistID(PID);
 
         }
         return PetPos;
@@ -259,7 +314,7 @@ public class Registry
         int petPos = -1;
         for (int i = 0; i < owners.size(); i++)
         {
-            for (int j = 0; j < owners.get(i).getPetSize(); j++)
+            for (int j = 0; j < owners.get(i).getPetAmount(); j++)
             {
                 if (owners.get(i).getPets().get(j).getPetID().equals(PID))
                 {
@@ -284,24 +339,31 @@ public class Registry
         }
     }
 
-    public void addPetToOwnerInRegis(Pet p, String OID)
+    public void addPetToOwnerInRegis(Pet p, String OID) // diff owner can have all same attribute pet
     {
-        int pos = ownerIdExistInRegis(OID);
-        if (pos == -1)
+        int ownerPos = getOwnerIdExistInRegis(OID);
+        if (ownerPos == -1)
         {
-            System.out.println("Duplicated found. Pet is not added.");
+            System.out.println(OWNER_NOT_FOUND);
         }
         else
         {
-            this.owners.get(pos).addPet(p);
-            System.out.println("Pet successfully added");
+            if (this.owners.get(ownerPos).getPets().contains(p))
+            {
+                System.out.println(DUPLICATE_FOUND);
+            }
+            else
+            {
+                this.owners.get(ownerPos).addPet(p);
+                System.out.println("Pet " + SUCCESSFULLY_ADDED);
+            }
         }
 
     }
 
     public void deletePetByIdInRegis(String OID, String PID)
     {
-        int ownerId = ownerIdExistInRegis(OID);
+        int ownerId = getOwnerIdExistInRegis(OID);
         int petId = petIdExistInRegis(PID);
         String outcome = findOwnerAndPetInThisOwner(OID, PID);
         if (outcome.equals(BOTH_FOUND))
@@ -317,7 +379,7 @@ public class Registry
 
     public String findOwnerAndPetInThisOwner(String OID, String PID)
     {
-        int ownerPos = ownerIdExistInRegis(OID);
+        int ownerPos = getOwnerIdExistInRegis(OID);
         int petPos = petIdExistInRegis(OID, PID);
 
         String outcome;
@@ -340,72 +402,208 @@ public class Registry
         return outcome;
     }
 
-    public void setPetOwnerIDInRegis(int OID, int PID)
+    public void setPetOwnerIDInRegis(int ownerPos, int petPos)
     {
-        String sOID = owners.get(OID).getOwnerID();
-        owners.get(OID).setPetOwnerId(PID, sOID);
+        String sOID = owners.get(ownerPos).getOwnerID();
+        owners.get(ownerPos).setPetOwnerId(petPos, sOID);
     }
 
-    public void setPetNameInRegis(int OID, int PID, String name)
+    public void setPetNameInRegis(int ownerPos, int petPos, String name)
     {
-        owners.get(OID).setPetName(PID, name);
+        owners.get(ownerPos).setPetName(petPos, name);
     }
 
-    public void setPetTypeInRegis(int OID, int PID, String type)
+    public void setPetTypeInRegis(int ownerPos, int petPos, String type)
     {
-        owners.get(OID).setPetType(PID, type);
+        owners.get(ownerPos).setPetType(petPos, type);
     }
 
-    public void setPetBreedInRegis(int OID, int PID, String breed)
+    public void setPetBreedInRegis(int ownerPos, int petPos, String breed)
     {
-        owners.get(OID).setPetBreed(PID, breed);
+        owners.get(ownerPos).setPetBreed(petPos, breed);
     }
 
-    public void setPetColourInRegis(int OID, int PID, String colour)
+    public void setPetColourInRegis(int ownerPos, int petPos, String colour)
     {
-        owners.get(OID).setPetColour(PID, colour);
+        owners.get(ownerPos).setPetColour(petPos, colour);
     }
 
-    public void setPetAgeInRegis(int OID, int PID, int age)
+    public void setPetAgeInRegis(int ownerPos, int petPos, int age)
     {
-        owners.get(OID).setPetAge(PID, age);
+        owners.get(ownerPos).setPetAge(petPos, age);
     }
 
-    public void setPetGenderInRegis(int OID, int PID, Gender gender)
+    public void setPetGenderInRegis(int ownerPos, int petPos, Gender gender)
     {
-        owners.get(OID).setPetGender(PID, gender);
+        owners.get(ownerPos).setPetGender(petPos, gender);
     }
 
-    public void setBirdWingSpanInRegis(int OID, int PID, double wingSpan)
+    public void setPetRegisDateInRegis(int ownerPos, int petPos, LocalDate regisDate)
     {
-        owners.get(OID).setPetWingSpan(PID, wingSpan);
+        owners.get(ownerPos).setPetRegisDate(petPos, regisDate);
     }
 
-    public void setBirdCanFlyInRegis(int OID, int PID, boolean canFly)
+    public void setBirdWingSpanInRegis(int ownerPos, int petPos, double wingSpan)
     {
-        owners.get(OID).setPetCanFly(PID, canFly);
+        owners.get(ownerPos).setPetWingSpan(petPos, wingSpan);
     }
 
-    public void setMammalNeuteredInRegis(int OID, int PID, boolean neutered)
+    public void setBirdCanFlyInRegis(int ownerPos, int petPos, boolean canFly)
     {
-        owners.get(OID).setPetNeutered(PID, neutered);
+        owners.get(ownerPos).setPetCanFly(petPos, canFly);
     }
 
-    public void setFishWaterTypeInRegis(int OID, int PID, WaterType water_Type)
+    public void setMammalNeuteredInRegis(int ownerPos, int petPos, boolean neutered)
     {
-        owners.get(OID).setPetWaterType(PID, water_Type);
+        owners.get(ownerPos).setPetNeutered(petPos, neutered);
     }
-    
-    public boolean getBoolean(String b)
+
+    public void setFishWaterTypeInRegis(int ownerPos, int petPos, WaterType water_Type)
     {
-        if(b.toLowerCase().startsWith("t"))
+        owners.get(ownerPos).setPetWaterType(petPos, water_Type);
+    }
+
+    public int getTotalPetAmountInRegis()
+    {
+        int totalPet = 0;
+        for (Owner o : this.owners)
         {
-            return true;
+            totalPet = totalPet + o.getPetAmount();
         }
-        else
-        {
-            return false;
-        }
+        return totalPet;
     }
 
+    public int getMammalNumInRegis()
+    {
+        int totalMammal = 0;
+        for (Owner o : this.owners)
+        {
+            totalMammal = totalMammal + o.getMammalNum();
+        }
+        return totalMammal;
+    }
+
+    public int getFishNumInRegis()
+    {
+        int totalFish = 0;
+        for (Owner o : this.owners)
+        {
+            totalFish = totalFish + o.getFishNum();
+        }
+        return totalFish;
+    }
+
+    public int getBirdNumInRegis()
+    {
+        int totalBird = 0;
+        for (Owner o : this.owners)
+        {
+            totalBird = totalBird + o.getBirdNum();
+        }
+        return totalBird;
+    }
+
+    public double getFishPercentageInRegis()
+    {
+        int fishNum = getFishNumInRegis();
+        int totalPet = getTotalPetAmountInRegis();
+        return fishNum / (double) totalPet * 100;
+    }
+
+    public double getMammalPercentageInRegis()
+    {
+        int mammalNum = getMammalNumInRegis();
+        int totalPet = getTotalPetAmountInRegis();
+        return mammalNum / (double) totalPet * 100;
+    }
+
+    public double getBirdPercentageInRegis()
+    {
+        int birdNum = getBirdNumInRegis();
+        int totalPet = getTotalPetAmountInRegis();
+        return birdNum / (double) totalPet * 100;
+    }
+
+    public List getAllPetsIntoNewListInRegis()
+    {
+        List<Pet> allPets = new ArrayList<Pet>();
+        for (int i = 0; i < this.owners.size(); i++)
+        {
+            for (int j = 0; j < this.owners.get(i).getPetAmount(); j++)
+            {
+                Pet p = this.owners.get(i).getThisPet(j);
+                allPets.add(p);
+            }
+        }
+        return allPets;
+    }
+
+    public double getAverageBirdWingSpanInRegis()
+    {
+        double totalWingSpan = 0;
+        for (Owner o : this.owners)
+        {
+            totalWingSpan = totalWingSpan + o.getTotalBirdWingSpan();
+        }
+        return totalWingSpan / getBirdNumInRegis();
+    }
+
+    public double getPercentageOfBirdCanFlyInRegis()
+    {
+        int canFlyNum = 0;
+        for (Owner o : this.owners)
+        {
+            canFlyNum = canFlyNum + o.getNumBirdCanFly();
+        }
+        return canFlyNum / (double) getBirdNumInRegis() * 100;
+    }
+
+    public double getPercentageOfMammalNeuteredInRegis()
+    {
+        int neuteredNum = 0;
+        for (Owner o : this.owners)
+        {
+            neuteredNum = neuteredNum + o.getNumMammalNeutered();
+        }
+        return neuteredNum / (double) getMammalNumInRegis() * 100;
+    }
+
+    public double getPercentageMalePetInRegis()
+    {
+        int numMalePet = 0;
+        for (Owner o : this.owners)
+        {
+            numMalePet = numMalePet + o.getNumMalePet();
+        }
+        return numMalePet / (double) getTotalPetAmountInRegis() * 100;
+    }
+
+    public void getFishWaterTypeStatisticInRegis()
+    {
+        int fishInBrackish = 0;
+        int fishInFresh = 0;
+        int fishInSea = 0;
+        for (Owner o : this.owners)
+        {
+            for (Pet p : o.getPets())
+            {
+                if (p instanceof Fish)
+                {
+                    switch (((Fish) p).getWater_Type())
+                    {
+                        case BRACKISH:
+                            fishInBrackish++;
+                            break;
+                        case FRESHWATER:
+                            fishInFresh++;
+                            break;
+                        default:
+                            fishInSea++;
+                            break;
+                    }
+                }
+            }
+        }
+        System.out.println("There are " + fishInBrackish + " fishes in brackish, " + fishInFresh + " fishes in freshwater and " + fishInSea + " fishes in sea.");
+    }
 }

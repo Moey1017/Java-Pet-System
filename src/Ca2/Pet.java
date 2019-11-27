@@ -5,6 +5,7 @@
  */
 package Ca2;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -12,7 +13,7 @@ import java.util.Objects;
  *
  * @author HP
  */
-public class Pet implements Comparable<Pet>
+public class Pet implements Serializable, Comparable<Pet>
 {
     private String      name;
     private String      type;
@@ -25,7 +26,8 @@ public class Pet implements Comparable<Pet>
     public  static int  pets_registered = 0;
     private String      ownerID;
 
-    public Pet(String name, String type, String breed, int age, String colour, Gender gender, LocalDate regis_Date, String ownerID) 
+    //load file 
+    public Pet(String name, String type, String breed, int age, String colour, Gender gender, LocalDate regis_Date, String ownerID, String petID) 
     {
         this.type = type;
         this.name = name;
@@ -34,35 +36,40 @@ public class Pet implements Comparable<Pet>
         this.colour = colour;
         this.gender = gender;
         this.regis_Date = regis_Date;
-        this.petID = "PID" + pets_registered;
-        pets_registered++;
+        this.petID = petID;
         this.ownerID = ownerID;
     }
 
-    public Pet(String name, String type, String breed, int age, String colour, Gender gender, LocalDate regis_Date)
+    //using this to add Pet in main
+    public Pet(String name, String type, String breed, String colour, int age, String ownerID)
     {
-        this.type = type;
         this.name = name;
+        this.type = type;
         this.breed = breed;
+        this.colour = colour;
+        this.age = age;
+        this.regis_Date = LocalDate.now();
+        this.gender = Gender.MALE;
+        this.ownerID = ownerID;
+        this.petID = "PID" + pets_registered;
+        pets_registered++;
+    }
+
+    //try
+    public Pet(String name, String ownerID) 
+    {
+        this.name = name;
+        this.type = "";
+        this.breed = "";
+        this.ownerID = ownerID;
         setAge(age);
-        this.colour = colour;
-        this.gender = gender;
-        this.regis_Date = regis_Date;
+        this.colour = "";
+        this.gender = Gender.MALE;
+        this.regis_Date = LocalDate.now();
         this.petID = "PID" + pets_registered;
         pets_registered++;
     }
-
-    //using this
-    public Pet(String name, String type, String breed, String colour)
-    {
-        this.name = name;
-        this.type = type;
-        this.breed = breed;
-        this.colour = colour;
-        this.petID = "PID" + pets_registered;
-        pets_registered++;
-    }
-
+    
     public Pet(String name) 
     {
         this.name = name;
@@ -183,7 +190,7 @@ public class Pet implements Comparable<Pet>
     @Override
     public String toString()
     {
-        return "Pet{" + "name=" + name + ", type=" + type + ", breed=" + breed + ", age=" + age + ", colour=" + colour + ", gender=" + gender + ", regis_Date=" + regis_Date + ", petID=" + petID + ", pets_registered=" + pets_registered + ", ownerID=" + ownerID + '}';
+        return "Pet{" + "name=" + name + ", type=" + type + ", breed=" + breed + ", age=" + age + ", colour=" + colour + ", gender=" + gender + ", regis_Date=" + regis_Date + ", petID=" + petID + ", ownerID=" + ownerID + '}';
     }
 
     @Override
@@ -238,7 +245,6 @@ public class Pet implements Comparable<Pet>
         }
         return true;
     }
-    
     
     @Override
     public int compareTo(Pet other)

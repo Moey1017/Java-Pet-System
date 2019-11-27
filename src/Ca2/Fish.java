@@ -17,21 +17,15 @@ public class Fish extends Pet
 
     private WaterType water_Type;
 
-    public Fish(String type, String name, String breed, int age, String colour, Gender gender, LocalDate regis_Date, String ownerID, WaterType water_Type)
+    public Fish(String type, String name, String breed, int age, String colour, Gender gender, LocalDate regis_Date, String ownerID,String petID, WaterType water_Type)
     {
-        super(name, type, breed, age, colour, gender, regis_Date, ownerID);
+        super(name, type, breed, age, colour, gender, regis_Date, ownerID, petID);
         this.water_Type = water_Type;
     }
 
-    public Fish(String type, String name, String breed, int age, String colour, Gender gender, LocalDate regis_Date, WaterType water_Type)
+    public Fish(String name, String type, String breed, String colour, int age, String ownerID, WaterType water_Type)
     {
-        super(name, type, breed, age, colour, gender, regis_Date);
-        this.water_Type = water_Type;
-    }
-
-    public Fish(String name, String type, String breed, String colour, WaterType water_Type)
-    {
-        super(name, type, breed, colour);
+        super(name, type, breed, colour, age, ownerID);
         this.water_Type = water_Type;
     }
 
