@@ -31,11 +31,18 @@ public class Registry
     public static String SUCCESSFULLY_ADDED = "successfully added.";
     private ArrayList<Owner> owners;
 
+    /**
+     * constructor 
+     */
     public Registry()
     {
         owners = new ArrayList<>();
     }
 
+    /**
+     * addOwnerInRegis
+     * @param o owner has been passed in 
+     */
     public void addOwnerInRegis(Owner o)
     {
         if (this.owners.contains(o))
@@ -49,37 +56,61 @@ public class Registry
         }
     }
 
+    /**
+     * setOwnerNameInRegis
+     * @param OID Owner OID 
+     * @param name new name
+     */
     public void setOwnerNameInRegis(String OID, String name)
     {
         int ownerPos = getOwnerIdExistInRegis(OID);
         this.owners.get(ownerPos).setName(name);
     }
 
+    /**
+     * setOwnerEmailInRegis
+     * @param OID Owner OID 
+     * @param email new email
+     */
     public void setOwnerEmailInRegis(String OID, String email)
     {
         int ownerPos = getOwnerIdExistInRegis(OID);
         this.owners.get(ownerPos).setEmail(email);
     }
 
+    /**
+     * setOwnerTelephoneInRegis
+     * @param OID Owner OID 
+     * @param telephone new telephone
+     */
     public void setOwnerTelephoneInRegis(String OID, String telephone)
     {
         int ownerPos = getOwnerIdExistInRegis(OID);
         this.owners.get(ownerPos).setTelephone(telephone);
     }
 
+    /**
+     * setOwnerHomeAddressInRegis
+     * @param OID Owner OID 
+     * @param home_Address new home_Address
+     */
     public void setOwnerHomeAddressInRegis(String OID, String home_Address)
     {
         int ownerPos = getOwnerIdExistInRegis(OID);
         this.owners.get(ownerPos).setHome_Address(home_Address);
     }
 
+    /**
+     * deleteOwnerByIdInRegis
+     * @param OID Owner OID 
+     */
     public void deleteOwnerByIdInRegis(String OID)
     {
-        int ownerId = getOwnerIdExistInRegis(OID);
-        if (ownerId != -1)
+        int ownerPos = getOwnerIdExistInRegis(OID);
+        if (ownerPos != -1)
         {
-            this.owners.get(ownerId).deleteAllPet();
-            this.owners.remove(ownerId);
+            this.owners.get(ownerPos).deleteAllPet();
+            this.owners.remove(ownerPos);
             System.out.println("Owners and Pets under this owner have been removed.");
         }
         else
@@ -88,11 +119,20 @@ public class Registry
         }
     }
 
+    /**
+     *
+     * @return this arrayList of owner 
+     */
     public ArrayList<Owner> getOwners()
     {
         return this.owners;
     }
 
+    /**
+     *
+     * @param OID Owner OID 
+     * @return this OID owner
+     */
     public Owner getThisOwner(int OID)
     {
         return this.owners.get(OID);
@@ -104,7 +144,11 @@ public class Registry
         return "Registry{" + "owner=" + owners + '}';
     }
 
-    public void readFileOut(String filePath)
+    /**
+     * read file out into .bat file 
+     * @param filePath that been passed in 
+     */
+    public void readFileOut(String filePath) // file not found exception 
     {
         try
         {
@@ -118,7 +162,11 @@ public class Registry
         }
     }
 
-    public void readFileIn(String filePath)
+    /**
+     * read .bat file into system
+     * @param filePath that been passed in 
+     */
+    public void readFileIn(String filePath) // file not found exception 
     {
         try
         {
@@ -142,6 +190,9 @@ public class Registry
         }
     }
     
+    /**
+     *
+     */
     public void loadOwnerData()
     {
         try (Scanner input = new Scanner(new File("Owner Data.txt")))
@@ -167,6 +218,9 @@ public class Registry
         }
     }
 
+    /**
+     * loadPetData from a text file
+     */
     public void loadPetData()
     {
         try (Scanner input = new Scanner(new File("Pet Data.txt")))
@@ -249,11 +303,11 @@ public class Registry
         }
     }
 
-    public boolean ownerExist(Owner o)
-    {
-        return owners.contains(o);
-    }
-
+    /**
+     * 
+     * @param OID Owner OID 
+     * @return owner position when found, else return -1
+     */
     public int getOwnerIdExistInRegis(String OID)
     {
         int pos = -1;
@@ -269,6 +323,11 @@ public class Registry
         return pos;
     }
 
+    /**
+     *
+     * @param OID Owner OID 
+     * @return true when found, else return false
+     */
     public boolean ifgetOwnerIdExistInRegis(String OID)
     {
         if (getOwnerIdExistInRegis(OID) == -1)
@@ -282,6 +341,15 @@ public class Registry
     }
 
     // In owner
+
+    /**
+     * USING THIS TO CHECK IN MAIN 
+     * (ONLY USING METHOD TO CHECK IF PET UNDER THIS SPECIFIC OWNER IN MAIN TO ENSURE ONLY WHO KNOW BOTH CAN MODIFY THE PET)
+     * check if petIdExistInRegis UNDER this SPECIFIC OWNER
+     * @param OID Owner OID 
+     * @param PID
+     * @return pet position when found, else return -1
+     */
     public int petIdExistInRegis(String OID, String PID)
     {
         int OwnerPos = getOwnerIdExistInRegis(OID);
@@ -295,6 +363,15 @@ public class Registry
     }
 
     // In owner
+
+    /**
+     * USING THIS TO CHECK IN MAIN 
+     * (ONLY USING METHOD TO CHECK IF PET UNDER THIS SPECIFIC OWNER IN MAIN TO ENSURE ONLY WHO KNOW BOTH CAN MODIFY THE PET)
+     *check ifPetIdExistInRegis UNDER this SPECIFIC OWNER
+     * @param OID Owner OID 
+     * @param PID
+     * @return true when found, else return false
+     */
     public boolean ifPetIdExistInRegis(String OID, String PID)
     {
         int pos = petIdExistInRegis(OID, PID);
@@ -309,6 +386,13 @@ public class Registry
     }
 
     // in all pets 
+
+    /**
+     * NOT USING
+     * check if pet Id Exist In Regis (ONLY USING METHOD TO CHECK IF PET UNDER THIS SPECIFIC OWNER IN MAIN TO ENSURE ONLY WHO KNOW BOTH CAN MODIFY THE PET)
+     * @param PID
+     * @return
+     */
     public int petIdExistInRegis(String PID)
     {
         int petPos = -1;
@@ -326,6 +410,12 @@ public class Registry
     }
 
     //in all pets 
+
+    /**
+     * NOT USING 
+     * @param PID
+     * @return
+     */
     public boolean ifPetIdExistInRegis(String PID)
     {
         int pos = petIdExistInRegis(PID);
@@ -339,6 +429,11 @@ public class Registry
         }
     }
 
+    /**
+     * addPetToOwnerInRegis
+     * @param p new pet object
+     * @param OID Owner OID 
+     */
     public void addPetToOwnerInRegis(Pet p, String OID) // diff owner can have all same attribute pet
     {
         int ownerPos = getOwnerIdExistInRegis(OID);
@@ -361,6 +456,11 @@ public class Registry
 
     }
 
+    /**
+     * deletePetByIdInRegis
+     * @param OID Owner OID 
+     * @param PID pet id
+     */
     public void deletePetByIdInRegis(String OID, String PID)
     {
         int ownerId = getOwnerIdExistInRegis(OID);
@@ -377,6 +477,12 @@ public class Registry
         }
     }
 
+    /**
+     * find Owner, and Pet In This Owner
+     * @param OID Owner OID 
+     * @param PID pet id
+     * @return an outcome saying which pet has been found, owner has been found, both has been found or both not found
+     */
     public String findOwnerAndPetInThisOwner(String OID, String PID)
     {
         int ownerPos = getOwnerIdExistInRegis(OID);
@@ -402,67 +508,142 @@ public class Registry
         return outcome;
     }
 
+    /**
+     * setPetOwnerIDInRegis
+     * @param ownerPos Owner position in arrayList
+     * @param petPos Pet position in arrayList in this owner 
+     */
     public void setPetOwnerIDInRegis(int ownerPos, int petPos)
     {
         String sOID = owners.get(ownerPos).getOwnerID();
         owners.get(ownerPos).setPetOwnerId(petPos, sOID);
     }
 
+    /**
+     *
+     * @param ownerPos Owner position in arrayList
+     * @param petPos Pet position in arrayList in this owner 
+     * @param name new name 
+     */
     public void setPetNameInRegis(int ownerPos, int petPos, String name)
     {
         owners.get(ownerPos).setPetName(petPos, name);
     }
 
+    /**
+     *
+     * @param ownerPos Owner position in arrayList
+     * @param petPos Pet position in arrayList in this owner 
+     * @param type set new type 
+     */
     public void setPetTypeInRegis(int ownerPos, int petPos, String type)
     {
         owners.get(ownerPos).setPetType(petPos, type);
     }
 
+    /**
+     *
+     * @param ownerPos Owner position in arrayList
+     * @param petPos Pet position in arrayList in this owner 
+     * @param breed set new breed 
+     */
     public void setPetBreedInRegis(int ownerPos, int petPos, String breed)
     {
         owners.get(ownerPos).setPetBreed(petPos, breed);
     }
 
+    /**
+     *
+     * @param ownerPos Owner position in arrayList
+     * @param petPos Pet position in arrayList in this owner 
+     * @param colour set new color 
+     */
     public void setPetColourInRegis(int ownerPos, int petPos, String colour)
     {
         owners.get(ownerPos).setPetColour(petPos, colour);
     }
 
+    /**
+     *
+     * @param ownerPos Owner position in arrayList
+     * @param petPos Pet position in arrayList in this owner 
+     * @param age set new age
+     */
     public void setPetAgeInRegis(int ownerPos, int petPos, int age)
     {
         owners.get(ownerPos).setPetAge(petPos, age);
     }
 
+    /**
+     *
+     * @param ownerPos Owner position in arrayList
+     * @param petPos Pet position in arrayList in this owner 
+     * @param gender set new gender 
+     */
     public void setPetGenderInRegis(int ownerPos, int petPos, Gender gender)
     {
         owners.get(ownerPos).setPetGender(petPos, gender);
     }
 
+    /**
+     *
+     * @param ownerPos Owner position in arrayList
+     * @param petPos Pet position in arrayList in this owner 
+     * @param regisDate set new regisDate
+     */
     public void setPetRegisDateInRegis(int ownerPos, int petPos, LocalDate regisDate)
     {
         owners.get(ownerPos).setPetRegisDate(petPos, regisDate);
     }
 
+    /**
+     *
+     * @param ownerPos Owner position in arrayList
+     * @param petPos Pet position in arrayList in this owner 
+     * @param wingSpan set new wingspan 
+     */
     public void setBirdWingSpanInRegis(int ownerPos, int petPos, double wingSpan)
     {
         owners.get(ownerPos).setPetWingSpan(petPos, wingSpan);
     }
 
+    /**
+     *
+     * @param ownerPos Owner position in arrayList
+     * @param petPos Pet position in arrayList in this owner 
+     * @param canFly set new status of can fly 
+     */
     public void setBirdCanFlyInRegis(int ownerPos, int petPos, boolean canFly)
     {
         owners.get(ownerPos).setPetCanFly(petPos, canFly);
     }
 
+    /**
+     *
+     * @param ownerPos Owner position in arrayList
+     * @param petPos  Pet position in arrayList in this owner 
+     * @param neutered set new status of neutered 
+     */
     public void setMammalNeuteredInRegis(int ownerPos, int petPos, boolean neutered)
     {
         owners.get(ownerPos).setPetNeutered(petPos, neutered);
     }
 
+    /**
+     *
+     * @param ownerPos Owner position in arrayList
+     * @param petPos Pet position in arrayList in this owner 
+     * @param water_Type set new water type 
+     */
     public void setFishWaterTypeInRegis(int ownerPos, int petPos, WaterType water_Type)
     {
         owners.get(ownerPos).setPetWaterType(petPos, water_Type);
     }
 
+    /**
+     * getTotalPetAmountInRegis
+     * @return TotalPetAmountInRegis
+     */ 
     public int getTotalPetAmountInRegis()
     {
         int totalPet = 0;
@@ -473,6 +654,10 @@ public class Registry
         return totalPet;
     }
 
+    /**
+     * getMammalNumInRegis
+     * @return Mammal Number In Regis
+     */
     public int getMammalNumInRegis()
     {
         int totalMammal = 0;
@@ -483,6 +668,10 @@ public class Registry
         return totalMammal;
     }
 
+    /**
+     * getFishNumInRegis
+     * @return FishNumInRegis
+     */
     public int getFishNumInRegis()
     {
         int totalFish = 0;
@@ -493,6 +682,10 @@ public class Registry
         return totalFish;
     }
 
+    /**
+     *getBirdNumInRegis
+     * @return BirdNumInRegis
+     */
     public int getBirdNumInRegis()
     {
         int totalBird = 0;
@@ -503,6 +696,10 @@ public class Registry
         return totalBird;
     }
 
+    /**
+     * getFishPercentageInRegis
+     * @return FishPercentageInRegis
+     */
     public double getFishPercentageInRegis()
     {
         int fishNum = getFishNumInRegis();
@@ -510,6 +707,10 @@ public class Registry
         return fishNum / (double) totalPet * 100;
     }
 
+    /**
+     * getMammalPercentageInRegis
+     * @return MammalPercentageInRegis
+     */
     public double getMammalPercentageInRegis()
     {
         int mammalNum = getMammalNumInRegis();
@@ -517,6 +718,10 @@ public class Registry
         return mammalNum / (double) totalPet * 100;
     }
 
+    /**
+     * getBirdPercentageInRegis
+     * @return BirdPercentageInRegis
+     */
     public double getBirdPercentageInRegis()
     {
         int birdNum = getBirdNumInRegis();
@@ -524,6 +729,10 @@ public class Registry
         return birdNum / (double) totalPet * 100;
     }
 
+    /**
+     * getAllPetsIntoNewListInRegis
+     * @return a list contains all pets in all owner 
+     */
     public List getAllPetsIntoNewListInRegis()
     {
         List<Pet> allPets = new ArrayList<Pet>();
@@ -538,6 +747,10 @@ public class Registry
         return allPets;
     }
 
+    /**
+     * getAverageBirdWingSpanInRegis
+     * @return AverageBirdWingSpan
+     */
     public double getAverageBirdWingSpanInRegis()
     {
         double totalWingSpan = 0;
@@ -548,6 +761,10 @@ public class Registry
         return totalWingSpan / getBirdNumInRegis();
     }
 
+    /**
+     * getPercentageOfBirdCanFlyInRegis
+     * @return Percentage Of Bird Can Fly
+     */
     public double getPercentageOfBirdCanFlyInRegis()
     {
         int canFlyNum = 0;
@@ -558,6 +775,10 @@ public class Registry
         return canFlyNum / (double) getBirdNumInRegis() * 100;
     }
 
+    /**
+     * getPercentageOfMammalNeuteredInRegis
+     * @return Percentage Of Mammal Neutered
+     */
     public double getPercentageOfMammalNeuteredInRegis()
     {
         int neuteredNum = 0;
@@ -568,6 +789,10 @@ public class Registry
         return neuteredNum / (double) getMammalNumInRegis() * 100;
     }
 
+    /**
+     * getPercentageMalePetInRegis
+     * @return Percentage Male Pet
+     */
     public double getPercentageMalePetInRegis()
     {
         int numMalePet = 0;
@@ -578,6 +803,9 @@ public class Registry
         return numMalePet / (double) getTotalPetAmountInRegis() * 100;
     }
 
+    /**
+     * display number of fish in different type  
+    */
     public void getFishWaterTypeStatisticInRegis()
     {
         int fishInBrackish = 0;

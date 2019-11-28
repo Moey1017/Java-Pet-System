@@ -23,9 +23,21 @@ public class Owner implements Serializable, Comparable<Owner>
     private String telephone;
     private String home_Address;
     private String ownerID;
+
+    /**
+     *
+     */
     public static int owners_registered = 0;
     private ArrayList<Pet> pets;
 
+    /**
+     * Constructor
+     *
+     * @param name
+     * @param email
+     * @param telephone
+     * @param home_Address
+     */
     public Owner(String name, String email, String telephone, String home_Address)
     {
         this.name = name;
@@ -37,6 +49,15 @@ public class Owner implements Serializable, Comparable<Owner>
         this.pets = new ArrayList<>();
     }
 
+    /**
+     * Constructor
+     *
+     * @param OID
+     * @param name
+     * @param email
+     * @param telephone
+     * @param home_Address
+     */
     public Owner(String OID, String name, String email, String telephone, String home_Address)
     {
         this.ownerID = OID;
@@ -47,89 +68,143 @@ public class Owner implements Serializable, Comparable<Owner>
         this.pets = new ArrayList<>();
     }
 
-    public Owner(String name)
-    {
-        this.name = name;
-        this.ownerID = "OID" + owners_registered;
-        owners_registered++;
-        this.pets = new ArrayList<>();
-    }
-
-    public Owner()
-    {
-        this.pets = new ArrayList<Pet>();
-    }
-
+    /**
+     *
+     * @return name
+     */
     public String getName()
     {
         return name;
     }
 
+    /**
+     *
+     * @return ownerID
+     */
     public String getOwnerID()
     {
         return ownerID;
     }
 
+    /**
+     *
+     * @return email
+     */
     public String getEmail()
     {
         return email;
     }
 
+    /**
+     *
+     * @return telephone
+     */
     public String getTelephone()
     {
         return telephone;
     }
 
+    /**
+     *
+     * @return home_Address
+     */
     public String getHome_Address()
     {
         return home_Address;
     }
 
+    /**
+     * set nextId
+     *
+     * @param nextId
+     */
     public static void setOwners_registered(int nextId)
     {
         Owner.owners_registered = nextId;
     }
 
+    /**
+     * set name
+     *
+     * @param name
+     */
     public void setName(String name)
     {
         this.name = name;
     }
 
+    /**
+     * setOwnerID
+     *
+     * @param id
+     */
     public void setOwnerID(int id)
     {
         this.ownerID = "OID" + id;
     }
 
+    /**
+     * setEmail
+     *
+     * @param email
+     */
     public void setEmail(String email)
     {
         this.email = email;
     }
 
+    /**
+     * setTelephone
+     *
+     * @param telephone
+     */
     public void setTelephone(String telephone)
     {
         this.telephone = telephone;
     }
 
+    /**
+     * setHome_Address
+     *
+     * @param home_Address
+     */
     public void setHome_Address(String home_Address)
     {
         this.home_Address = home_Address;
     }
 
+    /**
+     * addPet into owner's pet arrayList
+     *
+     * @param p
+     */
     public void addPet(Pet p)
     {
         this.pets.add(p);
     }
 
+    /**
+     *
+     * @return getPetAmount
+     */
     public int getPetAmount()
     {
         return pets.size();
     }
 
+    /**
+     *
+     * @param PID
+     * @return thisPets
+     */
     public Pet thisPets(int PID)
     {
         return pets.get(PID);
     }
 
+    /**
+     * display Owner Pets
+     */
     public void displayOwnerPets()
     {
         for (int i = 0; i < pets.size(); i++)
@@ -138,6 +213,11 @@ public class Owner implements Serializable, Comparable<Owner>
         }
     }
 
+    /**
+     *
+     * @param PID
+     * @return ThisPet
+     */
     public Pet getThisPet(int PID)
     {
         return this.pets.get(PID);
@@ -149,76 +229,153 @@ public class Owner implements Serializable, Comparable<Owner>
         return "Owner{" + "name=" + name + ", email=" + email + ", telephone=" + telephone + ", home_Address=" + home_Address + ", ownerID=" + ownerID + ", pets=" + pets + '}';
     }
 
+    /**
+     *
+     * @return this pet ArrayList
+     */
     public ArrayList<Pet> getPets()
     {
         return pets;
     }
 
-    public boolean duplicate(Pet p)
-    {
-        return pets.contains(p);
-    }
-
+    /**
+     * setPetOwnerId
+     *
+     * @param petPos
+     * @param OID
+     */
     public void setPetOwnerId(int petPos, String OID)
     {
         pets.get(petPos).setOwnerID(OID);
     }
 
+    /**
+     * setPetName
+     *
+     * @param petPos
+     * @param name
+     */
     public void setPetName(int petPos, String name)
     {
         pets.get(petPos).setName(name);
     }
 
+    /**
+     * setPetType
+     *
+     * @param petPos
+     * @param type
+     */
     public void setPetType(int petPos, String type)
     {
         pets.get(petPos).setType(type);
     }
 
+    /**
+     * setPetBreed
+     *
+     * @param petPos
+     * @param breed
+     */
     public void setPetBreed(int petPos, String breed)
     {
         pets.get(petPos).setBreed(breed);
     }
 
+    /**
+     * setPetColour
+     *
+     * @param petPos
+     * @param colour
+     */
     public void setPetColour(int petPos, String colour)
     {
         pets.get(petPos).setColour(colour);
     }
 
+    /**
+     * setPetAge
+     *
+     * @param petPos
+     * @param age
+     */
     public void setPetAge(int petPos, int age)
     {
         pets.get(petPos).setAge(age);
     }
 
+    /**
+     * setPetGender
+     *
+     * @param petPos
+     * @param gender
+     */
     public void setPetGender(int petPos, Gender gender)
     {
         pets.get(petPos).setGender(gender);
     }
 
+    /**
+     * setPetRegisDate
+     *
+     * @param petPos
+     * @param regisDate
+     */
     public void setPetRegisDate(int petPos, LocalDate regisDate)
     {
         pets.get(petPos).setRegis_Date(regisDate);
     }
 
+    /**
+     * setPetWingSpan
+     *
+     * @param petPos
+     * @param wingSpan
+     */
     public void setPetWingSpan(int petPos, double wingSpan)
     {
         ((Bird) pets.get(petPos)).setWingSpan(wingSpan);
     }
 
-    public void setPetCanFly(int petPos, boolean hasWing)
+    /**
+     * setPetCanFly
+     *
+     * @param petPos
+     * @param canFly
+     */
+    public void setPetCanFly(int petPos, boolean canFly)
     {
-        ((Bird) pets.get(petPos)).setHasWing(hasWing);
+        ((Bird) pets.get(petPos)).setCanFly(canFly);
     }
 
+    /**
+     * setPetNeutered
+     *
+     * @param petPos
+     * @param isNeutered
+     */
     public void setPetNeutered(int petPos, boolean isNeutered)
     {
         ((Mammal) pets.get(petPos)).setIsNeutered(isNeutered);
     }
 
+    /**
+     * setPetWaterType
+     *
+     * @param petPos
+     * @param water_Type
+     */
     public void setPetWaterType(int petPos, WaterType water_Type)
     {
         ((Fish) pets.get(petPos)).setWater_Type(water_Type);
     }
 
+    /**
+     * GetPetExistID
+     *
+     * @param PID
+     * @return
+     */
     public int GetPetExistID(String PID)
     {
         int pos = -1;
@@ -232,6 +389,12 @@ public class Owner implements Serializable, Comparable<Owner>
         return pos;
     }
 
+    /**
+     * check ifPetExist
+     *
+     * @param PID
+     * @return true of false if pet exist
+     */
     public boolean ifPetExist(String PID)
     {
         if (GetPetExistID(PID) == -1)
@@ -244,6 +407,11 @@ public class Owner implements Serializable, Comparable<Owner>
         }
     }
 
+    /**
+     * deletePetById
+     *
+     * @param PID
+     */
     public void deletePetById(String PID)
     {
         int pos = GetPetExistID(PID);
@@ -258,11 +426,19 @@ public class Owner implements Serializable, Comparable<Owner>
         }
     }
 
+    /**
+     * deleteAllPet in this owner
+     */
     public void deleteAllPet()
     {
         pets.removeAll(pets);
     }
 
+    /**
+     * get Mammal number
+     *
+     * @return number of mammal
+     */
     public int getMammalNum()
     {
         int mammalNum = 0;
@@ -276,6 +452,11 @@ public class Owner implements Serializable, Comparable<Owner>
         return mammalNum;
     }
 
+    /**
+     * get bird number
+     *
+     * @return bird numbers
+     */
     public int getBirdNum()
     {
         int birdNum = 0;
@@ -289,6 +470,11 @@ public class Owner implements Serializable, Comparable<Owner>
         return birdNum;
     }
 
+    /**
+     * get fish number
+     *
+     * @return fish number
+     */
     public int getFishNum()
     {
         int fishNum = 0;
@@ -303,22 +489,37 @@ public class Owner implements Serializable, Comparable<Owner>
     }
 
     //not used
+    /**
+     * calculate percentageOfFish
+     *
+     * @return percentageOfFish
+     */
     public double percentageOfFish()
     {
         int fishNum = getFishNum();
         int totalPets = this.getPetAmount();
         return fishNum / (int) totalPets;
     }
-    
+
     //not used 
+    /**
+     * calculate percentageOfBird
+     *
+     * @return percentageOfBird
+     */
     public double percentageOfBird()
     {
         int birdNum = getBirdNum();
         int totalPets = this.getPetAmount();
         return birdNum / (int) totalPets;
     }
-    
+
     //not used
+    /**
+     * calculate percentageOfMammal
+     *
+     * @return percentageOfMammal
+     */
     public double percentageOfMammal()
     {
         int mammalNum = getMammalNum();
@@ -326,6 +527,11 @@ public class Owner implements Serializable, Comparable<Owner>
         return mammalNum / (int) totalPets;
     }
 
+    /**
+     * get total wing span
+     *
+     * @return total wing span
+     */
     public double getTotalBirdWingSpan()
     {
         double totalWingSpan = 0;
@@ -339,6 +545,11 @@ public class Owner implements Serializable, Comparable<Owner>
         return totalWingSpan;
     }
 
+    /**
+     * get Number of Bird that Can Fly
+     *
+     * @return Number of Bird that Can Fly
+     */
     public int getNumBirdCanFly()
     {
         int canFlyNum = 0;
@@ -355,6 +566,11 @@ public class Owner implements Serializable, Comparable<Owner>
         return canFlyNum;
     }
 
+    /**
+     * get Num Mammal Neutered
+     *
+     * @return number of mammal is neutered
+     */
     public int getNumMammalNeutered()
     {
         int neuteredNum = 0;
@@ -371,6 +587,11 @@ public class Owner implements Serializable, Comparable<Owner>
         return neuteredNum;
     }
 
+    /**
+     * get Number of Male Pet
+     *
+     * @return number of male pet
+     */
     public int getNumMalePet()
     {
         int maleNum = 0;
@@ -382,6 +603,16 @@ public class Owner implements Serializable, Comparable<Owner>
             }
         }
         return maleNum;
+    }
+
+    /**
+     * sort pet in natural order
+     *
+     * @param other
+     */
+    public void sortPet(Pet other)
+    {
+        Collections.sort(pets);
     }
 
     @Override
@@ -429,11 +660,6 @@ public class Owner implements Serializable, Comparable<Owner>
     public int compareTo(Owner other)
     {
         return this.ownerID.compareTo(other.ownerID);
-    }
-
-    public void sortPet(Pet other)
-    {
-        Collections.sort(pets);
     }
 
 }

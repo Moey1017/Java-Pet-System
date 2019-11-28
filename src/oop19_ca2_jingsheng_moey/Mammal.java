@@ -16,35 +16,71 @@ public class Mammal extends Pet
 
     private boolean isNeutered;
 
+    /**
+     *
+     * @param type
+     * @param name
+     * @param breed
+     * @param age
+     * @param colour
+     * @param gender
+     * @param regis_Date
+     * @param ownerID
+     * @param petID
+     * @param isNeutered
+     */
     public Mammal(String type, String name, String breed, int age, String colour, Gender gender, LocalDate regis_Date, String ownerID, String petID, boolean isNeutered)
     {
         super(name, type, breed, age, colour, gender, regis_Date, ownerID, petID);
         this.isNeutered = isNeutered;
     }
 
+    /**
+     *
+     * @param name
+     * @param type
+     * @param breed
+     * @param colour
+     * @param age
+     * @param ownerID
+     * @param isNeutered
+     */
     public Mammal(String name, String type, String breed, String colour, int age, String ownerID, boolean isNeutered)
     {
         super(name, type, breed, colour, age, ownerID);
         this.isNeutered = isNeutered;
     }
 
-    public Mammal(String name)
-    {
-        super(name);
-        this.isNeutered = isNeutered;
-    }
-
+    /**
+     *
+     * @param ownerID
+     * @param petID
+     * @param name
+     * @param type
+     * @param breed
+     * @param colour
+     * @param gender
+     * @param age
+     */
     public Mammal(String ownerID, String petID, String name, String type, String breed, String colour, Gender gender, int age)
     {
         super(ownerID,petID, name, type, breed, colour, gender, age);
         this.isNeutered = isNeutered;
     }
 
+    /**
+     *
+     * @return isNeutered
+     */
     public boolean isIsNeutered()
     {
         return isNeutered;
     }
 
+    /**
+     *
+     * @param isNeutered
+     */
     public void setIsNeutered(boolean isNeutered)
     {
         this.isNeutered = isNeutered;

@@ -17,6 +17,20 @@ public class Bird extends Pet
     private double wingSpan;
     private boolean canFly;
 
+    /**
+     *
+     * @param name
+     * @param type
+     * @param breed
+     * @param age
+     * @param colour
+     * @param gender
+     * @param regis_Date
+     * @param ownerID
+     * @param petID
+     * @param hasWing
+     * @param wingSpan
+     */
     public Bird(String name, String type, String breed, int age, String colour, Gender gender, LocalDate regis_Date, String ownerID,String petID, boolean hasWing, double wingSpan)
     {
         super(name, type, breed, age, colour, gender, regis_Date, ownerID, petID);
@@ -24,6 +38,17 @@ public class Bird extends Pet
         this.canFly = hasWing;
     }
 
+    /**
+     *
+     * @param name
+     * @param type
+     * @param breed
+     * @param colour
+     * @param age
+     * @param ownerID
+     * @param wingSpan
+     * @param canFly
+     */
     public Bird(String name, String type, String breed, String colour, int age, String ownerID, double wingSpan, boolean canFly)
     {
         super(name, type, breed, colour, age, ownerID);
@@ -31,13 +56,17 @@ public class Bird extends Pet
         this.canFly = canFly;
     }
 
-    public Bird(String name)
-    {
-        super(name);
-        this.wingSpan = wingSpan;
-        this.canFly = canFly;
-    }
-
+    /**
+     *
+     * @param ownerID
+     * @param petID
+     * @param name
+     * @param type
+     * @param breed
+     * @param colour
+     * @param gender
+     * @param age
+     */
     public Bird(String ownerID, String petID, String name, String type, String breed, String colour, Gender gender, int age)
     {
         super(ownerID,petID, name, type, breed, colour, gender, age);
@@ -45,24 +74,40 @@ public class Bird extends Pet
         this.canFly = canFly;
     }
 
+    /**
+     *
+     * @return wingSpan
+     */
     public double getWingSpan()
     {
         return wingSpan;
     }
 
+    /**
+     *
+     * @return canFly
+     */
     public boolean getCanFly()
     {
         return canFly;
     }
 
+    /**
+     * set wingSpan
+     * @param wingSpan
+     */
     public void setWingSpan(double wingSpan)
     {
         this.wingSpan = wingSpan;
     }
 
-    public void setHasWing(boolean hasWing)
+    /**
+     * set hasWing
+     * @param hasWing
+     */
+    public void setCanFly(boolean canFly)
     {
-        this.canFly = hasWing;
+        this.canFly = canFly;
     }
 
     @Override

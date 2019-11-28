@@ -32,14 +32,15 @@ public class MainMenu
     public static final int MINIMUM_AGE = 0;
     public static final int MAXIMUM_AGE = 100;
 
-    public static void main(String[] args)
+    /**
+     * Main Application
+     */
+    public static void runMainApp()
     {
         try
         {
-//            r1.loadOwnerData();
-//            r1.loadPetData();
             r1.readFileIn("Owner.dat");
-            
+
             System.out.println("Hello! Welcome to the Registration.");
             mainMenu();
             int select = Utilities.getValidInt(0, 9, "Input the number to select the options!");
@@ -98,6 +99,9 @@ public class MainMenu
 
     }
 
+    /**
+     * Display mainMenu
+     */
     public static void mainMenu()
     {
         Utilities.printLine("*", 150);
@@ -116,6 +120,9 @@ public class MainMenu
         Utilities.printLine("*", 150);
     }
 
+    /**
+     * Display displayAllPetMenu
+     */
     public static void displayAllPetMenu()
     {
         Utilities.printLine("*", 150);
@@ -128,6 +135,9 @@ public class MainMenu
         Utilities.printLine("*", 150);
     }
 
+    /**
+     * Display petStatisticMenu
+     */
     public static void petStatisticMenu()
     {
         Utilities.printLine("*", 150);
@@ -139,11 +149,15 @@ public class MainMenu
         Utilities.printLine("*", 150);
     }
 
+    /**
+     * Display All Owners
+     */
     public static void displayAllOwners()
     {
         System.out.println("Owner Table");
         Utilities.printLine("*", 150);
         System.out.printf("%-10s%-15s%-30s%-15s%-35s%10s\n", "OwnerID", "Name", "Email", "Telephone", "Home Address", "Pet Amount");
+        Utilities.printLine("*", 150);
         for (Owner o : r1.getOwners())
         {
             System.out.printf("%-10s%-15s%-30s%-15s%-40s%-10s", o.getOwnerID(), o.getName(), o.getEmail(), o.getTelephone(), o.getHome_Address(), o.getPetAmount());
@@ -152,6 +166,9 @@ public class MainMenu
         Utilities.printLine("*", 150);
     }
 
+    /**
+     * add a new owner
+     */
     public static void addOwner()
     {
         String name = getOwnerName();
@@ -192,9 +209,9 @@ public class MainMenu
     }
 
     /**
-     * set owner's name
+     * get owner's name
      *
-     * @param OID owner's pos in arrayList
+     * @return string of owner name
      */
     public static String getOwnerName()
     {
@@ -202,9 +219,9 @@ public class MainMenu
     }
 
     /**
-     * set owner's email
+     * get owner's email
      *
-     * @param OID owner's pos in arrayList
+     * @return string of email
      */
     public static String getOwnerEmail()
     {
@@ -212,9 +229,9 @@ public class MainMenu
     }
 
     /**
-     * set owner's telephone
+     * get owner's telephone
      *
-     * @param OID owner's pos in arrayList
+     * @return string of Telephone
      */
     public static String getOwnerTelephone()
     {
@@ -222,9 +239,9 @@ public class MainMenu
     }
 
     /**
-     * set owner's home address
+     * get owner's home address
      *
-     * @param OID owner's pos in arrayList
+     * @return string of Home_Address
      */
     public static String getOwnerHome_Address()
     {
@@ -232,7 +249,7 @@ public class MainMenu
     }
 
     /**
-     *
+     * delete Owner by Id
      */
     public static void deleteOwnerById()
     {
@@ -240,6 +257,9 @@ public class MainMenu
         r1.deleteOwnerByIdInRegis("OID" + inputOwnerId);
     }
 
+    /**
+     * deletePetById
+     */
     public static void deletePetById()
     {
         int ownerId = Utilities.getValidInt(MINIMUM_VALUE, "Enter Owner's id(Only Number)");
@@ -248,6 +268,9 @@ public class MainMenu
         r1.deletePetByIdInRegis("OID" + ownerId, "PID" + PID);
     }
 
+    /**
+     * add a new pet under a specific owner
+     */
     public static void addPet()
     {
         Pet p = null;
@@ -292,58 +315,55 @@ public class MainMenu
     }
 
     /**
-     * set pet's name, type, breed, age, colour, gender, owner's ID
+     * set all attributes in pet
      *
-     * @param owners arraylist of ownerset
      */
-    public static void setPetAll() // need to test this
+    public static void setPetAll()
     {
-        try
-        {
-            int OID = Utilities.getValidInt(MINIMUM_VALUE, "Enter Owner's id(Only Number)");
-            int PID = Utilities.getValidInt(MINIMUM_VALUE, "Enter pet's id(Only Number)");
-            int ownerPos = r1.getOwnerIdExistInRegis("OID" + OID);
-            int petPos = r1.petIdExistInRegis("OID" + OID, "PID" + PID);
-            String outcome = r1.findOwnerAndPetInThisOwner("OID" + OID, "PID" + PID);
-            if (outcome.equals(Registry.BOTH_FOUND))
-            {
-                r1.setPetOwnerIDInRegis(ownerPos, petPos);
-                r1.setPetNameInRegis(ownerPos, petPos, getPetName());
-                r1.setPetTypeInRegis(ownerPos, petPos, getPetType());
-                r1.setPetBreedInRegis(ownerPos, petPos, getPetBreed());
-                r1.setPetAgeInRegis(ownerPos, petPos, getPetAge());
-                r1.setPetColourInRegis(ownerPos, petPos, getPetColour());
-                r1.setPetGenderInRegis(ownerPos, petPos, getPetGender());
-                r1.setPetRegisDateInRegis(ownerPos, petPos, getPetRegisDate());
 
-                if (r1.getThisOwner(ownerPos).getThisPet(petPos) instanceof Mammal)
-                {
-                    r1.setMammalNeuteredInRegis(ownerPos, petPos, getMammalNeutered());
-                }
-                else if (r1.getThisOwner(ownerPos).getThisPet(petPos) instanceof Bird)
-                {
-                    r1.setBirdWingSpanInRegis(ownerPos, petPos, getBirdWingSpan());
-                    r1.setBirdCanFlyInRegis(ownerPos, petPos, setBirdCanFly());
-                }
-                else if (r1.getThisOwner(ownerPos).getThisPet(petPos) instanceof Fish)
-                {
-                    r1.setFishWaterTypeInRegis(ownerPos, petPos, getFishWaterType());
-                }
-                System.out.println("Pet successfully added." );
-            }
-            else
+        int OID = Utilities.getValidInt(MINIMUM_VALUE, "Enter Owner's id(Only Number)");
+        int PID = Utilities.getValidInt(MINIMUM_VALUE, "Enter pet's id(Only Number)");
+        int ownerPos = r1.getOwnerIdExistInRegis("OID" + OID);
+        int petPos = r1.petIdExistInRegis("OID" + OID, "PID" + PID);
+        String outcome = r1.findOwnerAndPetInThisOwner("OID" + OID, "PID" + PID);
+        if (outcome.equals(Registry.BOTH_FOUND))
+        {
+            r1.setPetOwnerIDInRegis(ownerPos, petPos);
+            r1.setPetNameInRegis(ownerPos, petPos, getPetName());
+            r1.setPetTypeInRegis(ownerPos, petPos, getPetType());
+            r1.setPetBreedInRegis(ownerPos, petPos, getPetBreed());
+            r1.setPetAgeInRegis(ownerPos, petPos, getPetAge());
+            r1.setPetColourInRegis(ownerPos, petPos, getPetColour());
+            r1.setPetGenderInRegis(ownerPos, petPos, getPetGender());
+            r1.setPetRegisDateInRegis(ownerPos, petPos, getPetRegisDate());
+
+            if (r1.getThisOwner(ownerPos).getThisPet(petPos) instanceof Mammal)
             {
-                System.out.println(outcome);
+                r1.setMammalNeuteredInRegis(ownerPos, petPos, getMammalNeutered());
             }
-        } catch (IllegalArgumentException e)
-        {
-            System.out.println(e.getMessage());
-        } catch (InputMismatchException e)
-        {
-            System.out.println(INPUT_MISS_MATCH);
+            else if (r1.getThisOwner(ownerPos).getThisPet(petPos) instanceof Bird)
+            {
+                r1.setBirdWingSpanInRegis(ownerPos, petPos, getBirdWingSpan());
+                r1.setBirdCanFlyInRegis(ownerPos, petPos, setBirdCanFly());
+            }
+            else if (r1.getThisOwner(ownerPos).getThisPet(petPos) instanceof Fish)
+            {
+                r1.setFishWaterTypeInRegis(ownerPos, petPos, getFishWaterType());
+            }
+            System.out.println("Pet successfully added.");
         }
+        else
+        {
+            System.out.println(outcome);
+        }
+
     }
 
+    /**
+     * get pet's owner Id
+     *
+     * @return a String of owner Id
+     */
     public static String getPetOwnerId()
     {
         int OID = Utilities.getValidInt(MINIMUM_VALUE, "Enter only numbers for Pet Owner Id");
@@ -353,7 +373,7 @@ public class MainMenu
     /**
      * get new pet name
      *
-     * @return new pet name
+     * @return String of new pet name
      */
     public static String getPetName()
     {
@@ -364,7 +384,7 @@ public class MainMenu
     /**
      * get new pet type
      *
-     * @return new pet type
+     * @return String of new pet type
      */
     public static String getPetType()
     {
@@ -375,7 +395,7 @@ public class MainMenu
     /**
      * get new pet Breed
      *
-     * @return new pet Breed
+     * @return String of new pet Breed
      */
     public static String getPetBreed()
     {
@@ -386,7 +406,7 @@ public class MainMenu
     /**
      * get new pet age
      *
-     * @return new pet age
+     * @return String of new pet age
      */
     public static int getPetAge()
     {
@@ -394,9 +414,9 @@ public class MainMenu
     }
 
     /**
-     * get new pet colour
+     * get new pet color
      *
-     * @return new pet colour
+     * @return String of new pet color
      */
     public static String getPetColour()
     {
@@ -407,7 +427,7 @@ public class MainMenu
     /**
      * get new pet gender
      *
-     * @return new pet gender
+     * @return String of new pet gender
      */
     public static Gender getPetGender()
     {
@@ -431,9 +451,9 @@ public class MainMenu
     }
 
     /**
-     * get new pet regis_Date
+     * get new pet registration date
      *
-     * @return new pet regis_Date
+     * @return String of new pet registration date
      */
     public static LocalDate getPetRegisDate()
     {
@@ -456,9 +476,11 @@ public class MainMenu
     }
 
     /**
+     * get new
+     *
      * @return pet's WaterType
      */
-    public static WaterType getFishWaterType()
+    public static WaterType getFishWaterType() // need to modify 
     {
         boolean validWater_Type = false;
         String stringWater_Type;
@@ -503,6 +525,8 @@ public class MainMenu
 
     /**
      * return pet's WingSpan
+     *
+     * @return double of wing span
      */
     public static double getBirdWingSpan()
     {
@@ -511,13 +535,18 @@ public class MainMenu
 
     /**
      * return pet's boolean hasWing
+     *
+     * @return status of bird can fly
      */
     public static boolean setBirdCanFly()
     {
         return Utilities.getValidBoolean("Enter T/F if bird can fly.");
     }
 
-    public static void getStatistic()
+    /**
+     * Display pet Statistic
+     */
+    public static void displayStatistic()
     {
         System.out.println("Pet statistic");
         Utilities.printLine("*", 150);
@@ -530,22 +559,46 @@ public class MainMenu
         Utilities.printLine("*", 150);
     }
 
+    /**
+     * display Bird Statistic
+     */
     public static void birdStatistic()
     {
         System.out.printf("Average Wing Span : %.2f\n", r1.getAverageBirdWingSpanInRegis());
         System.out.printf("Percentage bird can fly : %.2f%%\n", r1.getPercentageOfBirdCanFlyInRegis());
     }
 
+    /**
+     * display Mammal Statistic
+     */
     public static void mammalStatistic()
     {
         System.out.printf("Percentage of mammal that are neutered : %.2f%%\n", r1.getPercentageOfMammalNeuteredInRegis());
     }
 
+    /**
+     * get all pets into a list
+     *
+     * @return a list of all pet
+     */
     public static List getAllPetsIntoNewList()
     {
         return r1.getAllPetsIntoNewListInRegis();
     }
 
+    /**
+     * display fish statistic
+     */
+    public static void fishStatistic()
+    {
+        r1.getFishWaterTypeStatisticInRegis();
+    }
+
+    /**
+     * display all pet
+     *
+     * @param allPets an arrayList contains all pets
+     */
     public static void displayAllPets(List<Pet> allPets)
     {
         Utilities.printLine("*", 150);
@@ -559,6 +612,8 @@ public class MainMenu
 
     /**
      * display all pets or mammals, or birds or fishes in all owners
+     *
+     * @param allPets an arrayList contains all pets
      */
     public static void displayAllPets2(List<Pet> allPets)
     {
@@ -604,6 +659,9 @@ public class MainMenu
         Utilities.printLine("*", 150);
     }
 
+    /**
+     * display pet in different options
+     */
     public static void displayPetOption()
     {
         int select2;
@@ -649,6 +707,9 @@ public class MainMenu
         }
     }
 
+    /**
+     * display statistic options for user to select
+     */
     public static void displayStatisticOption()
     {
         int select3;
@@ -658,14 +719,14 @@ public class MainMenu
             switch (select3)
             {
                 case 1:
-                    getStatistic();
+                    displayStatistic();
                     break;
                 case 2:
                     birdStatistic();
                     break;
                 case 3:
                     fishStatistic();
-                    break; 
+                    break;
                 default:
                     mammalStatistic();
                     break;
@@ -673,10 +734,5 @@ public class MainMenu
             petStatisticMenu();
             select3 = Utilities.getValidInt(0, 4, "Input the number to select the options!");
         }
-    }
-    
-    public static void fishStatistic()
-    {
-        r1.getFishWaterTypeStatisticInRegis();
     }
 }

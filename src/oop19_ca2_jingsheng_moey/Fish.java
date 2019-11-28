@@ -17,35 +17,71 @@ public class Fish extends Pet
 
     private WaterType water_Type;
 
+    /**
+     *
+     * @param type
+     * @param name
+     * @param breed
+     * @param age
+     * @param colour
+     * @param gender
+     * @param regis_Date
+     * @param ownerID
+     * @param petID
+     * @param water_Type
+     */
     public Fish(String type, String name, String breed, int age, String colour, Gender gender, LocalDate regis_Date, String ownerID,String petID, WaterType water_Type)
     {
         super(name, type, breed, age, colour, gender, regis_Date, ownerID, petID);
         this.water_Type = water_Type;
     }
 
+    /**
+     *
+     * @param name
+     * @param type
+     * @param breed
+     * @param colour
+     * @param age
+     * @param ownerID
+     * @param water_Type
+     */
     public Fish(String name, String type, String breed, String colour, int age, String ownerID, WaterType water_Type)
     {
         super(name, type, breed, colour, age, ownerID);
         this.water_Type = water_Type;
     }
 
-    public Fish(String name)
-    {
-        super(name);
-        this.water_Type = water_Type;
-    }
-
+    /**
+     *
+     * @param ownerID
+     * @param petID
+     * @param name
+     * @param type
+     * @param breed
+     * @param colour
+     * @param gender
+     * @param age
+     */
     public Fish(String ownerID, String petID, String name, String type, String breed, String colour, Gender gender, int age)
     {
         super(ownerID,petID, name, type, breed, colour, gender, age);
         this.water_Type = water_Type;
     }
 
+    /**
+     *
+     * @return water_Type
+     */
     public WaterType getWater_Type()
     {
         return water_Type;
     }
 
+    /**
+     *
+     * @param water_Type
+     */
     public void setWater_Type(WaterType water_Type)
     {
         this.water_Type = water_Type;
