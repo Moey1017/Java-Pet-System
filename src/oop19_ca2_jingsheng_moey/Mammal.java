@@ -42,12 +42,13 @@ public class Mammal extends Pet
      * @param breed
      * @param colour
      * @param age
+     * @param gender
      * @param ownerID
      * @param isNeutered
      */
-    public Mammal(String name, String type, String breed, String colour, int age, String ownerID, boolean isNeutered)
+    public Mammal(String name, String type, String breed, String colour, int age, Gender gender, String ownerID, boolean isNeutered)
     {
-        super(name, type, breed, colour, age, ownerID);
+        super(name, type, breed, colour, age, gender, ownerID);
         this.isNeutered = isNeutered;
     }
 

@@ -136,11 +136,11 @@ public class Owner implements Serializable, Comparable<Owner>
     /**
      * setOwnerID
      *
-     * @param id
+     * @param OID
      */
-    public void setOwnerID(int id)
+    public void setOwnerID(String OID)
     {
-        this.ownerID = "OID" + id;
+        this.ownerID = OID;
     }
 
     /**

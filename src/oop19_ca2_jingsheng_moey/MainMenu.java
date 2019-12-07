@@ -19,8 +19,7 @@ import java.util.Scanner;
 public class MainMenu
 {
 
-    public static Registry r1 = new Registry();
-    public static Scanner input = new Scanner(System.in);
+    public static Registry r1;
     public static final String INPUT_MISS_MATCH = "Input does not matched!";
     public static final String ERROR_MESSAGE = "Something went wrong!Pls try again.";
     public static final String PET_NOT_FOUND = "Pet's ID not found!";
@@ -39,8 +38,10 @@ public class MainMenu
     {
         try
         {
+            r1 = new Registry();
             r1.readFileIn("Owner.dat");
 
+            Scanner input = new Scanner(System.in);
             System.out.println("Hello! Welcome to the Registration.");
             mainMenu();
             int select = Utilities.getValidInt(0, 9, "Input the number to select the options!");
@@ -90,7 +91,7 @@ public class MainMenu
                     input.nextLine();
                 }
             }
-            r1.readFileOut("Owner.dat");
+//            r1.readFileOut("Owner.dat");
             System.out.println("\nEXIT.Goodbye");
         } catch (Exception e)
         {
@@ -186,6 +187,7 @@ public class MainMenu
      */
     public static void setOwnerAll()
     {
+        Scanner input = new Scanner(System.in);
         System.out.println("Enter owner id(Only Number)");
         int inputOwnerId = input.nextInt();
         input.nextLine();
@@ -279,32 +281,33 @@ public class MainMenu
         if (ownerPos != -1)
         {
             String ownerID = r1.getThisOwner(ownerPos).getOwnerID();
-            String name = Utilities.getValidString("Enter Pet's name", "[A-Z|a-z][A-Z|a-z| ]{2,55}");
-            String type = Utilities.getValidString("Enter Pet's type", "[A-Z|a-z][A-Z|a-z| ]{2,55}");
-            String breed = Utilities.getValidString("Enter Pet's Breed", "[A-Z|a-z][A-Z|a-z| ]{2,55}");
-            String colour = Utilities.getValidString("Enter Pet's Colour", "[A-Z|a-z][A-Z|a-z| ]{2,55}");
-            int age = Utilities.getValidInt(MINIMUM_AGE, MAXIMUM_AGE, "Enter age(No lesser than 0 and larger than 100)");
+            String name = getPetName();
+            String type = getPetType();
+            String breed = getPetBreed();
+            String colour = getPetColour();
+            Gender gender = getPetGender();
+            int age = getPetAge();
 
             String typee = Utilities.getValidString("Enter pet type(p,b,f,m)", "[p|b|f|m|P|B|F|M]");
             if (typee.toLowerCase().startsWith("b"))
             {
                 double wingSpan = getBirdWingSpan();
                 boolean hasWing = setBirdCanFly();
-                p = new Bird(name, type, breed, colour, age, ownerID, wingSpan, hasWing);
+                p = new Bird(name, type, breed, colour, age, gender, ownerID, wingSpan, hasWing);
             }
             else if (typee.toLowerCase().startsWith("f"))
             {
                 WaterType water_Type = getFishWaterType();
-                p = new Fish(name, type, breed, colour, age, ownerID, water_Type);
+                p = new Fish(name, type, breed, colour, age, gender, ownerID, water_Type);
             }
             else if (typee.toLowerCase().startsWith("m"))
             {
                 boolean isNeutered = getMammalNeutered();
-                p = new Mammal(name, type, breed, colour, age, ownerID, isNeutered);
+                p = new Mammal(name, type, breed, colour, age, gender, ownerID, isNeutered);
             }
             else
             {
-                p = new Pet(name, type, breed, colour, age, ownerID);
+                p = new Pet(name, type, breed, colour, age, gender, ownerID);
             }
             r1.addPetToOwnerInRegis(p, "OID" + inputOwnerID);
         }
@@ -431,15 +434,9 @@ public class MainMenu
      */
     public static Gender getPetGender()
     {
-        System.out.println("Enter new Gender(M/F)");
-        String sGender = input.nextLine().toUpperCase();
+        String sGender = Utilities.getValidString("Enter new Gender(M/F)", "[m|f|M|F]");
         Gender gender;
-        while (!sGender.equals("M") && !sGender.equals("F"))
-        {
-            System.out.println("Enter new Gender(M/F)");
-            sGender = input.nextLine().toUpperCase();
-        }
-        if (sGender.startsWith("M"))
+        if (sGender.toUpperCase().startsWith("M"))
         {
             gender = Gender.MALE;
         }
@@ -482,6 +479,7 @@ public class MainMenu
      */
     public static WaterType getFishWaterType() // need to modify 
     {
+        Scanner input = new Scanner(System.in);
         boolean validWater_Type = false;
         String stringWater_Type;
         WaterType water_Type = null;

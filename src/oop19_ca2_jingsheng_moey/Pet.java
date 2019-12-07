@@ -62,9 +62,10 @@ public class Pet implements Serializable, Comparable<Pet>
      * @param breed
      * @param colour
      * @param age
+     * @param gender
      * @param ownerID
      */
-    public Pet(String name, String type, String breed, String colour, int age, String ownerID)
+    public Pet(String name, String type, String breed, String colour, int age, Gender gender,String ownerID)
     {
         this.name = name;
         this.type = type;
@@ -72,7 +73,7 @@ public class Pet implements Serializable, Comparable<Pet>
         this.colour = colour;
         this.age = age;
         this.regis_Date = LocalDate.now();
-        this.gender = Gender.MALE;
+        this.gender = gender;
         this.ownerID = ownerID;
         this.petID = "PID" + pets_registered;
         pets_registered++;
@@ -190,6 +191,16 @@ public class Pet implements Serializable, Comparable<Pet>
         Pet.pets_registered = nextPetID;
     }
 
+    /**
+     * set Pet id
+     *
+     * @param petID
+     */
+    public void setPetID(String petID)
+    {
+        this.petID = petID;
+    }
+     
     /**
      * set type
      *

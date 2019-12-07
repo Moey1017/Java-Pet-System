@@ -43,12 +43,13 @@ public class Fish extends Pet
      * @param breed
      * @param colour
      * @param age
+     * @param gender
      * @param ownerID
      * @param water_Type
      */
-    public Fish(String name, String type, String breed, String colour, int age, String ownerID, WaterType water_Type)
+    public Fish(String name, String type, String breed, String colour, int age, Gender gender, String ownerID, WaterType water_Type)
     {
-        super(name, type, breed, colour, age, ownerID);
+        super(name, type, breed, colour, age, gender, ownerID);
         this.water_Type = water_Type;
     }
 

@@ -46,12 +46,13 @@ public class Bird extends Pet
      * @param colour
      * @param age
      * @param ownerID
+     * @param gender
      * @param wingSpan
      * @param canFly
      */
-    public Bird(String name, String type, String breed, String colour, int age, String ownerID, double wingSpan, boolean canFly)
+    public Bird(String name, String type, String breed, String colour, int age, Gender gender, String ownerID, double wingSpan, boolean canFly)
     {
-        super(name, type, breed, colour, age, ownerID);
+        super(name, type, breed, colour, age, gender, ownerID);
         this.wingSpan = wingSpan;
         this.canFly = canFly;
     }

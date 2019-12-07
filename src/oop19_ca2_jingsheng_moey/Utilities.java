@@ -14,12 +14,6 @@ import java.util.Scanner;
  */
 public class Utilities
 {
-
-    public static void main(String[] args)
-    {
-        getValidInt(0, 10, "hello");
-    }
-
     public static String INPUT_MISS_MATCH = "Input doesn't Match!";
     public static String ERROR_MESSAGE = "Something went wrong, pls try again!";
 
@@ -141,7 +135,7 @@ public class Utilities
         System.out.println("Input T/F");
         String user_input = input.nextLine();
 
-        while (!user_input.toLowerCase().matches("[t|f]"))
+        while (!user_input.toLowerCase().matches("[t|f|true|false]"))
         {
             System.out.println("Input T/F");
             user_input = input.nextLine();
@@ -169,12 +163,35 @@ public class Utilities
         System.out.println(msg);
         String user_input = input.nextLine();
 
-        while (!user_input.toLowerCase().matches("[t|f]"))
+        while (!user_input.toLowerCase().matches("[t|f|true|false]"))
         {
             System.out.println(msg);
             user_input = input.nextLine();
         }
         if (user_input.startsWith("t"))
+        {
+            validated_Boolean = true;
+        }
+        else
+        {
+            validated_Boolean = false;
+        }
+        return validated_Boolean;
+    }
+    
+    public static boolean getValidBoolean(String msg, String validation)
+    {
+        Scanner input = new Scanner(System.in);
+        boolean validated_Boolean = false;
+        System.out.println(msg);
+        String user_input = input.nextLine();
+
+        while (!user_input.matches(validation))
+        {
+            System.out.println(msg);
+            user_input = input.nextLine();
+        }
+        if (user_input.toLowerCase().startsWith("y"))
         {
             validated_Boolean = true;
         }

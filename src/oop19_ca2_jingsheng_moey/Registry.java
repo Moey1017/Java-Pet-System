@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.time.LocalDate;
@@ -109,9 +110,18 @@ public class Registry
         int ownerPos = getOwnerIdExistInRegis(OID);
         if (ownerPos != -1)
         {
-            this.owners.get(ownerPos).deleteAllPet();
-            this.owners.remove(ownerPos);
-            System.out.println("Owners and Pets under this owner have been removed.");
+            boolean proceed = Utilities.getValidBoolean("(Y/N) to delete", "[Y|N]");
+            if(proceed)
+            {
+                this.owners.get(ownerPos).deleteAllPet();
+                this.owners.remove(ownerPos);
+                System.out.println("Owners and Pets under this owner have been removed.");
+            }
+            else
+            {
+                System.out.println("Delete cancelled.");
+            }
+            
         }
         else
         {
@@ -156,7 +166,10 @@ public class Registry
                     new FileOutputStream(filePath));
             out.writeObject(this.owners);
             out.close();
-        } catch (Exception e)
+        } catch (FileNotFoundException e)
+        {
+            System.out.println(e);
+        } catch (IOException e)
         {
             System.out.println(e);
         }
@@ -181,21 +194,25 @@ public class Registry
             }
             else
             {
-                loadOwnerData();
-                loadPetData();
+                loadOwnerData("Owner Data.txt");
+                loadPetData("Pet Data.txt");
             }
-        } catch (Exception e)
+        } catch (FileNotFoundException e)
         {
-            System.out.println(e);
+            System.out.println(e.getMessage());
+        } catch (IOException | ClassNotFoundException e)
+        {
+            System.out.println(e.getMessage());
         }
     }
     
     /**
-     *
+     * load Owner Data from a text file
+     *@param filePath that been passed in 
      */
-    public void loadOwnerData()
+    public void loadOwnerData(String filePath)
     {
-        try (Scanner input = new Scanner(new File("Owner Data.txt")))
+        try (Scanner input = new Scanner(new File(filePath)))
         {
             int nextOwnerId = input.nextInt();
             Owner.setOwners_registered(nextOwnerId);
@@ -220,10 +237,11 @@ public class Registry
 
     /**
      * loadPetData from a text file
+     * @param filePath that been passed in 
      */
-    public void loadPetData()
+    public void loadPetData(String filePath)
     {
-        try (Scanner input = new Scanner(new File("Pet Data.txt")))
+        try (Scanner input = new Scanner(new File(filePath)))
         {
             int nextPetId = input.nextInt();
             Pet.setPets_registered(nextPetId);
@@ -357,7 +375,6 @@ public class Registry
         if (OwnerPos != -1)
         {
             PetPos = owners.get(OwnerPos).GetPetExistID(PID);
-
         }
         return PetPos;
     }
@@ -468,8 +485,17 @@ public class Registry
         String outcome = findOwnerAndPetInThisOwner(OID, PID);
         if (outcome.equals(BOTH_FOUND))
         {
-            owners.get(ownerId).getPets().remove(petId);
-            System.out.println("Pet successfully removed.");
+            boolean proceed = Utilities.getValidBoolean("(Y/N) to delete", "[Y|N]");
+            if(proceed)
+            {
+                owners.get(ownerId).getPets().remove(petId);
+                System.out.println("Pet successfully removed.");
+            }
+            else
+            {
+                System.out.println("Delete cancelled.");
+            }
+            
         }
         else
         {
